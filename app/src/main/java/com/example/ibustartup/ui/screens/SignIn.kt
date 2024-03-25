@@ -76,7 +76,11 @@ fun SignIn() {
                 .border(width = 2.dp, color = LightBlue, shape = RoundedCornerShape(8.dp))
                 .clip(shape = RoundedCornerShape(8.dp)),
             leadingIcon = {
-                Icon(painter = painterResource(id = R.drawable.password), contentDescription = "Password icon")
+                Icon(
+                    painter = painterResource(id = R.drawable.password),
+                    contentDescription = "Password icon",
+                    tint = LightBlue
+                )
             },
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.Transparent,
@@ -96,7 +100,8 @@ fun SignIn() {
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.mail),
-                    contentDescription = "Email icon"
+                    contentDescription = "Email icon",
+                    tint = LightBlue
                 )
             },
             colors = TextFieldDefaults.colors(
