@@ -19,12 +19,17 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +38,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,6 +51,19 @@ import com.example.ibustartup.ui.theme.LightBlueBackground
 
 @Composable
 fun SignIn() {
+
+    var email by remember {
+        mutableStateOf("");
+    }
+
+    var password by remember {
+        mutableStateOf("")
+    }
+
+    var passwordVisible by remember {
+        mutableStateOf(false)
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
             text = "IBU | Startup",
@@ -66,7 +86,7 @@ fun SignIn() {
         )
         Spacer(modifier = Modifier.height(25.dp))
         TextField(
-            value = "", onValueChange = {},
+            value = email, onValueChange = { email = it },
             placeholder = {
                 Text(text = "Enter your email", fontWeight = FontWeight.Light)
             },
@@ -84,11 +104,13 @@ fun SignIn() {
             },
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent
             ),
+            singleLine = true
         )
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
-            value = "", onValueChange = {},
+            value = password, onValueChange = { password = it },
             placeholder = {
                 Text(text = "Enter your password", fontWeight = FontWeight.Light)
             },
@@ -106,9 +128,23 @@ fun SignIn() {
             },
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
             ),
+            singleLine = true,
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val image = if (!passwordVisible) R.drawable.showpass else R.drawable.hidepass
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        painter = painterResource(id = image),
+                        contentDescription = "Show/Hide password",
+                        tint = LightBlue
+                    )
+                }
+            }
         )
-        Spacer(modifier = Modifier.height(36.dp))
+        Spacer(modifier = Modifier.height(54.dp))
 
         Text(
             text = "Don't have an account?",
@@ -118,7 +154,9 @@ fun SignIn() {
         )
         Spacer(modifier = Modifier.height(54.dp))
         Button(
-            onClick = { /*TODO*/ }, modifier = Modifier
+            onClick = {
+                /* TODO */
+            }, modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .align(Alignment.CenterHorizontally),
             colors = ButtonDefaults.buttonColors(
