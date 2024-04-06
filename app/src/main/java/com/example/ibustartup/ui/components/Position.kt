@@ -17,7 +17,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,12 +33,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ibustartup.R
+import com.example.ibustartup.data.CommentData
+import com.example.ibustartup.data.PositionData
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
+//TODO Add some items to see the lazy column
+//TODO Create functional navigation
+
 @Composable
-fun Position() {
+fun Position(position: PositionData) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,7 +55,7 @@ fun Position() {
         Row() {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    painter = painterResource(id = R.drawable.profile),
+                    painter = painterResource(id = position.profileImage),
                     contentDescription = "Profile picture",
                     modifier = Modifier
                         .size(50.dp)
@@ -55,61 +63,73 @@ fun Position() {
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
-                    Text(text = "Sead Masetic", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                    Text(text = "@seadmasetic", fontWeight = FontWeight.Light, fontSize = 12.sp)
+                    Text(text = position.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text(
+                        text = "@${position.username}",
+                        fontWeight = FontWeight.Light,
+                        fontSize = 12.sp
+                    )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Row() {
-                    Text(text = "Add friend", color = LightBlue)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(
-                        painter = painterResource(id = R.drawable.addfriend),
-                        contentDescription = "Add friend icon",
-                        tint = LightBlue
+                Button(
+                    onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent
                     )
+                ) {
+                    Row() {
+                        Text(text = "Add friend", color = LightBlue)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            painter = painterResource(id = R.drawable.addfriend),
+                            contentDescription = "Add friend icon",
+                            tint = LightBlue
+                        )
+                    }
                 }
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Some example text here", modifier = Modifier.padding(8.dp))
+        Text(text = position.description, modifier = Modifier.padding(8.dp))
         Spacer(modifier = Modifier.height(10.dp))
-        Image(
-            painter = painterResource(id = R.drawable.positionimage),
-            contentDescription = "Position image",
-            modifier = Modifier.clip(shape = RoundedCornerShape(8.dp))
-        )
+        if (position.positionImage != null) {
+            Image(
+                painter = painterResource(id = position.positionImage),
+                contentDescription = "Position image",
+                modifier = Modifier.clip(shape = RoundedCornerShape(8.dp))
+            )
+        }
         Spacer(modifier = Modifier.height(30.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Row(modifier = Modifier.weight(1f)) {
+            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(id = R.drawable.like),
                     contentDescription = "Like",
                     tint = LightBlue,
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "15 likes", fontSize = 12.sp)
+                Text(text = "${position.likeCount.toString()} likes", fontSize = 12.sp)
             }
-            Row(modifier = Modifier.weight(1f)) {
+            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(id = R.drawable.comment),
                     contentDescription = "Comment",
                     tint = LightBlue
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "15 comments", fontSize = 12.sp)
+                Text(text = "${position.commentCount.toString()} comments", fontSize = 12.sp)
             }
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(id = R.drawable.apply),
                     contentDescription = "Apply",
                     tint = LightBlue
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "15 applies", fontSize = 12.sp)
+                Text(text = "${position.applyCount.toString()} applies", fontSize = 12.sp)
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
-        Divider(color = GrayStroke, thickness = 1.dp)
+        HorizontalDivider(thickness = 1.dp, color = GrayStroke)
         Spacer(modifier = Modifier.height(15.dp))
         Row() {
             Button(
@@ -119,7 +139,12 @@ fun Position() {
                     containerColor = LightBlue
                 )
             ) {
-                Text(text = "Like")
+                Icon(
+                    painter = painterResource(id = R.drawable.like),
+                    contentDescription = "Apply",
+                    modifier = Modifier.size(15.dp)
+                )
+
             }
             Spacer(modifier = Modifier.width(15.dp))
             Button(
@@ -129,7 +154,12 @@ fun Position() {
                     containerColor = LightBlue
                 )
             ) {
-                Text(text = "Comment")
+                Icon(
+                    painter = painterResource(id = R.drawable.comment),
+                    contentDescription = "Apply",
+                    modifier = Modifier.size(15.dp)
+                )
+
             }
             Spacer(modifier = Modifier.width(15.dp))
             Button(
@@ -139,35 +169,17 @@ fun Position() {
                     containerColor = LightBlue
                 )
             ) {
-                Text(text = "Apply")
+                Icon(
+                    painter = painterResource(id = R.drawable.apply),
+                    contentDescription = "Apply",
+                    modifier = Modifier.size(15.dp)
+                )
+
             }
         }
         Spacer(modifier = Modifier.height(25.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-                .background(color = LightGray, shape = RoundedCornerShape(8.dp))
-                .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp)),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(modifier = Modifier.width(10.dp))
-            Image(
-                painter = painterResource(id = R.drawable.profile),
-                contentDescription = "Profile picture",
-                modifier = Modifier
-                    .size(25.dp)
-                    .clip(shape = CircleShape)
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.padding(8.dp)) {
-                Text(text = "Sead Masetic", fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                Text(
-                    text = "Just a comment here used for testing and basically just a placeholder.",
-                    fontWeight = FontWeight.Light,
-                    fontSize = 12.sp
-                )
-            }
+        for (comment in position.comments) {
+            Comment(comment = comment)
         }
     }
 }
@@ -175,5 +187,28 @@ fun Position() {
 @Preview(showBackground = true, backgroundColor = 0xFF656565)
 @Composable
 fun PositionPreview() {
-    Position()
+    val comments = mutableListOf(
+        CommentData(
+            profileImage = R.drawable.profile,
+            name = "Sead Masetic",
+            comment = "Test"
+        ),
+        CommentData(
+            profileImage = R.drawable.profile,
+            name = "Sead Masetic",
+            comment = "Test"
+        )
+    )
+    val position = PositionData(
+        profileImage = R.drawable.profile,
+        name = "Sead Masetic",
+        username = "seadmasetic",
+        description = "Test",
+        positionImage = R.drawable.positionimage,
+        likeCount = 15,
+        commentCount = 1,
+        applyCount = 14,
+        comments = comments
+    )
+    Position(position = position)
 }

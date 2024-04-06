@@ -13,8 +13,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,6 +30,8 @@ import com.example.ibustartup.R
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.GrayBackground
 import com.example.ibustartup.ui.theme.GrayStroke
+import com.example.ibustartup.ui.theme.LightBlue
+import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
 fun Header(modifier: Modifier = Modifier) {
@@ -34,6 +39,7 @@ fun Header(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = "IBU | Startup",
@@ -42,16 +48,24 @@ fun Header(modifier: Modifier = Modifier) {
             color = DarkBlue,
             modifier = Modifier.weight(1f)
         )
-        Icon(
-            painter = painterResource(id = R.drawable.add),
-            contentDescription = "Add icon",
-            tint = GrayBackground
-        )
+        IconButton(
+            onClick = {
+
+            }, modifier = Modifier.size(25.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.add),
+                contentDescription = "Add icon",
+                tint = GrayBackground
+            )
+        }
         Spacer(modifier = Modifier.width(10.dp))
         Image(
             painter = painterResource(id = R.drawable.profile),
             contentDescription = "Profile picture",
-            modifier = Modifier.size(25.dp).clip(shape = CircleShape)
+            modifier = Modifier
+                .size(25.dp)
+                .clip(shape = CircleShape)
         )
     }
 }
