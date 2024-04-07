@@ -39,7 +39,6 @@ import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
-//TODO Add some items to see the lazy column
 //TODO Create functional navigation
 
 @Composable

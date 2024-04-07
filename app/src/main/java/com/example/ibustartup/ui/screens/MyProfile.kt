@@ -257,7 +257,7 @@ fun MyProfile() {
             }
         }
         Spacer(modifier = Modifier.weight(1f))
-        BottomBarNavigation()
+        //BottomBarNavigation()
     }
 }
 

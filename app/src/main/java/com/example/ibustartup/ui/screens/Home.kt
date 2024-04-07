@@ -1,5 +1,6 @@
 package com.example.ibustartup.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,6 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ibustartup.R
+import com.example.ibustartup.data.CommentData
 import com.example.ibustartup.data.PositionData
 import com.example.ibustartup.ui.components.BottomBarNavigation
 import com.example.ibustartup.ui.components.Header
@@ -40,6 +45,7 @@ import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Home(positions: List<PositionData>) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -98,13 +104,42 @@ fun Home(positions: List<PositionData>) {
                 Position(position = position)
             }
         }
-        Spacer(modifier = Modifier.weight(1f))
-        BottomBarNavigation()
     }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
 @Composable
 fun HomePreview() {
-    //Home()
+    val comments = mutableListOf(
+        CommentData(
+            profileImage = R.drawable.profile,
+            name = "Sead Fikret",
+            "Komentar"
+        )
+    )
+    val positions = mutableListOf(
+        PositionData(
+            name = "Sead Masetic",
+            username = "seadmasetic",
+            description = "Testiranje",
+            profileImage = R.drawable.profile,
+            positionImage = R.drawable.positionimage,
+            likeCount = 45,
+            commentCount = 25,
+            applyCount = 128,
+            comments = comments
+        ),
+        PositionData(
+            name = "Sead Masetic",
+            username = "seadmasetic",
+            description = "Testiranje",
+            profileImage = R.drawable.profile,
+            positionImage = R.drawable.positionimage,
+            likeCount = 45,
+            commentCount = 25,
+            applyCount = 128,
+            comments = comments
+        )
+    )
+    Home(positions = positions)
 }
