@@ -55,15 +55,6 @@ fun Header(modifier: Modifier = Modifier) {
             color = DarkBlue,
             modifier = Modifier.weight(1f)
         )
-        IconButton(
-            onClick = {}, modifier = Modifier.size(25.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.add),
-                contentDescription = "Add icon",
-                tint = GrayBackground
-            )
-        }
         Spacer(modifier = Modifier.width(10.dp))
         IconButton(
             onClick = {}, modifier = Modifier.size(25.dp)

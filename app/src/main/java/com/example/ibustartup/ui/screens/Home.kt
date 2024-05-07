@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
@@ -53,46 +54,6 @@ import com.example.ibustartup.ui.theme.LightGray
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Home(positions: List<PositionData>, modifier: Modifier) {
-
-    val navController = rememberNavController()
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = "IBU | Startup",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = DarkBlue,
-            modifier = Modifier.weight(1f)
-        )
-        IconButton(
-            onClick = {}, modifier = Modifier.size(25.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.add),
-                contentDescription = "Add icon",
-                tint = GrayBackground
-            )
-        }
-        Spacer(modifier = Modifier.width(10.dp))
-        IconButton(
-            onClick = {
-            }
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.profile),
-                contentDescription = "Profile picture",
-                modifier = Modifier
-                    .size(25.dp)
-                    .clip(shape = CircleShape)
-            )
-        }
-    }
-
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(bottom = 100.dp)) {
@@ -151,6 +112,7 @@ fun Home(positions: List<PositionData>, modifier: Modifier) {
                 Position(position = position)
             }
         }
+
     }
 }
 
