@@ -54,9 +54,9 @@ fun SignUp(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var passwordRepeat by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
-    var checkPassword by remember { mutableStateOf(true) }
+    var checkPassword by remember { mutableStateOf(false) }
     var checkEmail by remember { mutableStateOf(false) }
-
+    var checkPasswordRepeat by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -193,21 +193,32 @@ fun SignUp(navController: NavController) {
             )
         )
 
+        if (checkEmail) {
+            Text(text = "Invalid email addres", color = Color.Red, fontSize = 12.sp)
+        }
+
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = {
+                password = it
+                checkPassword = isValidPassword(password)
+            },
             label = {
                 Text(text = "Your password", fontWeight = FontWeight.Light)
             },
             leadingIcon = {
-                Icon(painter = painterResource(id = R.drawable.password), contentDescription = "", tint = LightBlue)
+                Icon(
+                    painter = painterResource(id = R.drawable.password),
+                    contentDescription = "",
+                    tint = LightBlue
+                )
             },
             visualTransformation = if (showPassword) {
                 VisualTransformation.None
             } else {
                 PasswordVisualTransformation()
             },
-            isError = !checkPassword,
+            isError = checkPassword,
             trailingIcon = {
                 Icon(
                     painter = if (!showPassword) {
@@ -234,6 +245,14 @@ fun SignUp(navController: NavController) {
             )
         )
 
+        if (checkPassword) {
+            Text(
+                text = "Password doesn't meet the requirements",
+                color = Color.Red,
+                fontSize = 12.sp
+            )
+        }
+
         OutlinedTextField(
             value = passwordRepeat,
             onValueChange = { passwordRepeat = it },
@@ -241,10 +260,18 @@ fun SignUp(navController: NavController) {
                 Text(text = "Confirm your password", fontWeight = FontWeight.Light)
             },
             leadingIcon = {
-                Icon(painter = painterResource(id = R.drawable.password), contentDescription = "", tint = LightBlue)
+                Icon(
+                    painter = painterResource(id = R.drawable.password),
+                    contentDescription = "",
+                    tint = LightBlue
+                )
             },
-            visualTransformation = PasswordVisualTransformation(),
-            isError = !checkPassword,
+            visualTransformation = if (showPassword) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
+            isError = checkPasswordRepeat,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
@@ -257,6 +284,14 @@ fun SignUp(navController: NavController) {
                 unfocusedBorderColor = LightBlue
             )
         )
+
+        if (checkPasswordRepeat) {
+            Text(
+                text = "Passwords doesn't match",
+                color = Color.Red,
+                fontSize = 12.sp
+            )
+        }
 
         Button(
             onClick = {
@@ -276,7 +311,8 @@ fun SignUp(navController: NavController) {
 
         Button(
             onClick = {
-                checkPassword = password == passwordRepeat
+                checkPasswordRepeat = !passwordMatch(password, passwordRepeat)
+                checkPassword = !isValidPassword(password)
                 checkEmail = !checkEmail(email)
             },
             modifier = Modifier
@@ -297,6 +333,16 @@ fun SignUp(navController: NavController) {
 
 fun checkEmail(email: String): Boolean {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+}
+
+fun isValidPassword(password: String): Boolean {
+    val passwordRegex =
+        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$".toRegex()
+    return passwordRegex.matches(password)
+}
+
+fun passwordMatch(password: String, passwordRepeat: String): Boolean {
+    return password == passwordRepeat
 }
 
 @Preview(showBackground = true)
