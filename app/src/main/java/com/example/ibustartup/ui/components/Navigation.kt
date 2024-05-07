@@ -73,10 +73,10 @@ fun Navigation(navController: NavHostController) {
             MyProfile()
         }
         composable("SignIn") {
-            SignIn()
+            SignIn(navController)
         }
         composable("SignUp") {
-            SignUp()
+            SignUp(navController)
         }
     }
 }

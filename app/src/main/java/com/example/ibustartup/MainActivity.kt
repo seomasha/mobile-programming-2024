@@ -30,6 +30,7 @@ import com.example.ibustartup.ui.components.BottomBarNavigation
 import com.example.ibustartup.ui.components.Header
 import com.example.ibustartup.ui.components.Navigation
 import com.example.ibustartup.ui.screens.SignIn
+import com.example.ibustartup.ui.screens.SignUp
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.IBUStartupTheme
 
@@ -42,11 +43,13 @@ class MainActivity : ComponentActivity() {
             IBUStartupTheme {
                 val navController = rememberNavController()
                 Scaffold(bottomBar = {
-                    BottomBarNavigation(
-                        navController = navController,
-                        onItemClick = {
-                            navController.navigate(it.route)
-                        })
+                    if (navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignIn" && navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignUp") {
+                        BottomBarNavigation(
+                            navController = navController,
+                            onItemClick = {
+                                navController.navigate(it.route)
+                            })
+                    }
 
                 }, floatingActionButton = {
                     if (navController.currentBackStackEntryAsState().value?.destination?.route == "Home") {
@@ -86,9 +89,15 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    Log.d("ROUTE", navController.currentBackStackEntryAsState()?.value?.destination?.route ?: "Not a route")
+                    //Log.d("ROUTE", navController.currentBackStackEntryAsState()?.value?.destination?.route ?: "Not a route")
                 }) {
-                    Navigation(navController = navController)
+                    if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignIn") {
+                        SignIn(navController = navController)
+                    } else if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignIn") {
+                        SignUp(navController = navController)
+                    } else {
+                        Navigation(navController = navController)
+                    }
                 }
             }
         }

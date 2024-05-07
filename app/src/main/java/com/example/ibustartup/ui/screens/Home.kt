@@ -54,9 +54,10 @@ import com.example.ibustartup.ui.theme.LightGray
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Home(positions: List<PositionData>, modifier: Modifier) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = 100.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize().padding(top = 50.dp, bottom = 100.dp)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

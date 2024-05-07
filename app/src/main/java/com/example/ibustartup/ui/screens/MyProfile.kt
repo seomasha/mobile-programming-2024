@@ -39,17 +39,17 @@ import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
 fun MyProfile() {
-    Column(modifier = Modifier.fillMaxSize()) {
-
+    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         val navController = rememberNavController()
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
+                .fillMaxWidth(0.95f)
+                .padding(top = 70.dp)
                 .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp))
                 .background(color = Color.White, shape = RoundedCornerShape(8.dp))
                 .padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = R.drawable.profile),
@@ -164,7 +164,8 @@ fun MyProfile() {
                     Text(
                         text = "Sead Masetic",
                         color = LightBlue,
-                        modifier = Modifier.align(Alignment.CenterVertically)
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        fontSize = 12.sp
                     )
                 }
                 Row(
@@ -186,7 +187,8 @@ fun MyProfile() {
                     Text(
                         text = "Fikret Zajmovic",
                         color = LightBlue,
-                        modifier = Modifier.align(Alignment.CenterVertically)
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        fontSize = 12.sp
                     )
                 }
             }

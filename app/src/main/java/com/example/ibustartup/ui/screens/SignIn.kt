@@ -47,13 +47,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightBlueBackground
 
 @Composable
-fun SignIn() {
+fun SignIn(navController: NavController) {
 
     var email by remember {
         mutableStateOf("");
@@ -90,13 +92,13 @@ fun SignIn() {
         Spacer(modifier = Modifier.height(25.dp))
         TextField(
             value = email, onValueChange = { email = it },
-            placeholder = {
-                Text(text = "Enter your email", fontWeight = FontWeight.Light)
+            label = {
+                Text(text = "Your email", fontWeight = FontWeight.Light)
             },
             modifier = Modifier
                 .fillMaxWidth(0.90f)
                 .align(Alignment.CenterHorizontally)
-                .border(width = 2.dp, color = LightBlue, shape = RoundedCornerShape(8.dp))
+                .border(width = 1.dp, color = LightBlue, shape = RoundedCornerShape(8.dp))
                 .clip(shape = RoundedCornerShape(8.dp)),
             leadingIcon = {
                 Icon(
@@ -114,13 +116,13 @@ fun SignIn() {
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
             value = password, onValueChange = { password = it },
-            placeholder = {
-                Text(text = "Enter your password", fontWeight = FontWeight.Light)
+            label = {
+                Text(text = "Your password", fontWeight = FontWeight.Light)
             },
             modifier = Modifier
                 .fillMaxWidth(0.90f)
                 .align(Alignment.CenterHorizontally)
-                .border(width = 2.dp, color = LightBlue, shape = RoundedCornerShape(8.dp))
+                .border(width = 1.dp, color = LightBlue, shape = RoundedCornerShape(8.dp))
                 .clip(shape = RoundedCornerShape(8.dp)),
             leadingIcon = {
                 Icon(
@@ -142,20 +144,27 @@ fun SignIn() {
                     Icon(
                         painter = painterResource(id = image),
                         contentDescription = "Show/Hide password",
-                        tint = LightBlue
+                        tint = LightBlue,
+                        modifier = Modifier.size(18.dp)
                     )
                 }
             }
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(54.dp))
 
-        Text(
-            text = "Don't have an account?",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Light,
-            modifier = Modifier.padding(24.dp, 0.dp)
-        )
-        Spacer(modifier = Modifier.height(24.dp))
+        Button(onClick = {
+            navController.navigate("SignUp")
+        }, colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+            contentColor = LightBlue
+        )) {
+            Text(
+                text = "Don't have an account?",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Light,
+            )
+        }
+        Spacer(modifier = Modifier.height(54.dp))
         Button(
             onClick = {
                 /* TODO */
@@ -175,5 +184,5 @@ fun SignIn() {
 @Composable
 @Preview(showBackground = true)
 fun SignInPreview() {
-    SignIn()
+    //SignIn()
 }
