@@ -58,16 +58,13 @@ fun Navigation(navController: NavHostController) {
             Home(positions = positions, modifier = Modifier)
         }
         composable("Startups") {
-            //Text(text = "Startups")
-            SignIn()
+            Text(text = "Startups")
         }
         composable("Friends") {
-            //Text(text = "Friends")
-            SignUp()
+            Text(text = "Friends")
         }
         composable("Activity") {
-            //Text(text = "Activity")
-            MyProfile()
+            Text(text = "Activity")
         }
         composable("Investors") {
             Text(text = "Investors")

@@ -42,19 +42,6 @@ fun MyProfile() {
     Column(modifier = Modifier.fillMaxSize()) {
 
         val navController = rememberNavController()
-
-        Header(
-            modifier = Modifier
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
-                )
-                .border(
-                    width = 2.dp,
-                    color = GrayStroke,
-                    shape = RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
-                )
-        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()

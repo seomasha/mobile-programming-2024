@@ -57,18 +57,6 @@ fun Home(positions: List<PositionData>, modifier: Modifier) {
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(bottom = 100.dp)) {
-        Header(
-            modifier = Modifier
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
-                )
-                .border(
-                    width = 2.dp,
-                    color = GrayStroke,
-                    shape = RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
-                )
-        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()

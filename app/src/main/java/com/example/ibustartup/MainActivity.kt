@@ -49,11 +49,44 @@ class MainActivity : ComponentActivity() {
                         })
 
                 }, floatingActionButton = {
-                    if(navController.currentBackStackEntryAsState().value?.destination?.route == "Home") {
+                    if (navController.currentBackStackEntryAsState().value?.destination?.route == "Home") {
                         FloatingActionButton(onClick = { /*TODO*/ }) {
-                            Icon(painter = painterResource(id = R.drawable.add), contentDescription = "")
+                            Icon(
+                                painter = painterResource(id = R.drawable.add),
+                                contentDescription = "Home FAB"
+                            )
+                        }
+                    } else if (navController.currentBackStackEntryAsState().value?.destination?.route == "MyProfile") {
+                        FloatingActionButton(onClick = { /*TODO*/ }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.add),
+                                contentDescription = "MyProfile FAB"
+                            )
                         }
                     }
+                }, topBar = {
+                    if (navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignIn" && navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignUp") {
+                        Header(
+                            modifier = Modifier
+                                .background(
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(
+                                        bottomStart = 15.dp,
+                                        bottomEnd = 15.dp
+                                    )
+                                )
+                                .border(
+                                    width = 2.dp,
+                                    color = GrayStroke,
+                                    shape = RoundedCornerShape(
+                                        bottomEnd = 15.dp,
+                                        bottomStart = 15.dp
+                                    )
+                                ), navController = navController
+                        )
+                    }
+
+                    Log.d("ROUTE", navController.currentBackStackEntryAsState()?.value?.destination?.route ?: "Not a route")
                 }) {
                     Navigation(navController = navController)
                 }

@@ -41,7 +41,7 @@ import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
-fun Header(modifier: Modifier = Modifier) {
+fun Header(modifier: Modifier = Modifier, navController: NavController) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -57,10 +57,12 @@ fun Header(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.width(10.dp))
         IconButton(
-            onClick = {}, modifier = Modifier.size(25.dp)
+            onClick = {
+                navController.navigate("SignUp")
+            }, modifier = Modifier.size(25.dp)
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.more),
+                painter = painterResource(id = R.drawable.signout_filled),
                 contentDescription = "More",
                 tint = GrayBackground
             )
