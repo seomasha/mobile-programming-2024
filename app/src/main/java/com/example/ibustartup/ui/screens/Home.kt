@@ -21,6 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,16 +32,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
 import com.example.ibustartup.data.CommentData
 import com.example.ibustartup.data.PositionData
 import com.example.ibustartup.ui.components.BottomBarNavigation
 import com.example.ibustartup.ui.components.Header
 import com.example.ibustartup.ui.components.Position
+import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.GrayBackground
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
@@ -47,8 +52,50 @@ import com.example.ibustartup.ui.theme.LightGray
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Home(positions: List<PositionData>) {
-    Column(modifier = Modifier.fillMaxSize()) {
+fun Home(positions: List<PositionData>, modifier: Modifier) {
+
+    val navController = rememberNavController()
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = "IBU | Startup",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            color = DarkBlue,
+            modifier = Modifier.weight(1f)
+        )
+        IconButton(
+            onClick = {}, modifier = Modifier.size(25.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.add),
+                contentDescription = "Add icon",
+                tint = GrayBackground
+            )
+        }
+        Spacer(modifier = Modifier.width(10.dp))
+        IconButton(
+            onClick = {
+            }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.profile),
+                contentDescription = "Profile picture",
+                modifier = Modifier
+                    .size(25.dp)
+                    .clip(shape = CircleShape)
+            )
+        }
+    }
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(bottom = 100.dp)) {
         Header(
             modifier = Modifier
                 .background(
@@ -141,5 +188,5 @@ fun HomePreview() {
             comments = comments
         )
     )
-    Home(positions = positions)
+    Home(positions = positions, modifier = Modifier)
 }

@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
 import com.example.ibustartup.ui.components.BottomBarNavigation
 import com.example.ibustartup.ui.components.Header
@@ -39,6 +40,9 @@ import com.example.ibustartup.ui.theme.LightGray
 @Composable
 fun MyProfile() {
     Column(modifier = Modifier.fillMaxSize()) {
+
+        val navController = rememberNavController()
+
         Header(
             modifier = Modifier
                 .background(

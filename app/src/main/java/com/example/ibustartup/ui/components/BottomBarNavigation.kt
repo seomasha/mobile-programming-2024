@@ -57,6 +57,12 @@ fun BottomBarNavigation(
             route = "Investors",
             selectedIcon = R.drawable.investors_filled,
             unselectedIcon = R.drawable.investors
+        ),
+        NavigationItem(
+            title = "My Profile",
+            route = "MyProfile",
+            selectedIcon = R.drawable.myprofile_filled,
+            unselectedIcon = R.drawable.myprofile
         )
     )
 

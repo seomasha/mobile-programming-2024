@@ -12,8 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -144,7 +147,7 @@ fun SignIn() {
                 }
             }
         )
-        Spacer(modifier = Modifier.height(54.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             text = "Don't have an account?",
@@ -152,7 +155,7 @@ fun SignIn() {
             fontWeight = FontWeight.Light,
             modifier = Modifier.padding(24.dp, 0.dp)
         )
-        Spacer(modifier = Modifier.height(54.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         Button(
             onClick = {
                 /* TODO */
@@ -165,6 +168,7 @@ fun SignIn() {
         ) {
             Text("Sign in")
         }
+
     }
 }
 
