@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ibustartup.ui.screens.SignIn
+import com.example.ibustartup.ui.screens.Startups
 import com.example.ibustartup.ui.theme.IBUStartupTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SignIn()
+                    Startups()
                 }
             }
         }
