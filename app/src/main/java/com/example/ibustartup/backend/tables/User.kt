@@ -5,10 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "Users")
 data class User(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val firstName: String,
     val lastName: String,
     val email: String,
     val password: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
 )

@@ -49,21 +49,11 @@ fun Startups(){
     Column (
         modifier = Modifier
             .fillMaxSize()
+            .padding(top = 60.dp)
             .verticalScroll(
                 rememberScrollState()
             )
     ){
-        Header(modifier = Modifier
-            .background(
-                color = Color.White,
-                shape = RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
-            )
-            .border(
-                width = 2.dp,
-                color = GrayStroke,
-                shape = RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
-            )
-        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -78,7 +68,7 @@ fun Startups(){
                     horizontalArrangement = Arrangement.Center
                 ){
                     Text(
-                        text = "Your friend requests",
+                        text = "Filters",
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         color = DarkBlue
@@ -303,7 +293,6 @@ fun Startups(){
                     }
                 }
             }
-        BottomBarNavigation()
     }
 }
 

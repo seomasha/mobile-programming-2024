@@ -39,8 +39,6 @@ import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
-//TODO Create functional navigation
-
 @Composable
 fun Position(position: PositionData) {
     Column(
