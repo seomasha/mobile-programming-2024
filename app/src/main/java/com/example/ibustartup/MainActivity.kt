@@ -36,15 +36,25 @@ import com.example.ibustartup.ui.screens.SignIn
 import com.example.ibustartup.ui.screens.SignUp
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.IBUStartupTheme
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 //Add composable to the routes
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            /*val user = User("Sead", "Masetic", "maseticsead@gmail.com", "sony")
+            GlobalScope.launch {
+                IBUStartupDatabase.getDatabase(applicationContext).userDao().insertUser(user)
+            }
+             */
             IBUStartupTheme {
                 val navController = rememberNavController()
+
+                Room.databaseBuilder(applicationContext, IBUStartupDatabase::class.java, "ibu_database").build()
+
                 Scaffold(bottomBar = {
                     if (navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignIn" && navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignUp") {
                         BottomBarNavigation(
