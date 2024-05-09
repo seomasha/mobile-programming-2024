@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.jetbrains.annotations.NotNull
 
-@Entity("investors")
-data class Investor (
+@Entity("friends")
+data class Friends(
     @PrimaryKey(autoGenerate = true)
     @NotNull
-    val id: Int
+    val id: Int = 0
 )

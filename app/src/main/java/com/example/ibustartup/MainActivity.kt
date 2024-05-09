@@ -53,8 +53,6 @@ class MainActivity : ComponentActivity() {
             IBUStartupTheme {
                 val navController = rememberNavController()
 
-                Room.databaseBuilder(applicationContext, IBUStartupDatabase::class.java, "ibu_database").build()
-
                 Scaffold(bottomBar = {
                     if (navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignIn" && navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignUp") {
                         BottomBarNavigation(
