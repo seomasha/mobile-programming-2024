@@ -4,17 +4,17 @@ import com.example.ibustartup.backend.dao.PositionDao
 import com.example.ibustartup.backend.tables.Position
 import kotlinx.coroutines.flow.Flow
 
-class PositionRepository(private val positionDao: PositionDao) {
+class PositionRepository(private val positionDao: PositionDao): BaseRepository<Position> {
+    override suspend fun insert(t: Position) = positionDao.insertPosition(t)
 
-    suspend fun upsertPosition(position: Position) = positionDao.upsertPosition(position)
+    override suspend fun update(t: Position) = positionDao.updatePosition(t)
 
-    suspend fun insertPosition(position: Position) = positionDao.insertPosition(position)
+    override suspend fun delete(t: Position) = positionDao.deletePosition(t)
 
-    suspend fun updatePosition(position: Position) = positionDao.updatePosition(position)
+    override suspend fun upsert(t: Position) = positionDao.upsertPosition(t)
 
-    suspend fun deletePosition(position: Position) = positionDao.deletePosition(position)
+    override fun getAll(): Flow<List<Position>> = positionDao.getAllPositions()
 
-    fun getAllPositions(): Flow<List<Position>> = positionDao.getAllPositions()
+    override fun getByID(id: Int): Flow<Position> = positionDao.getPositionByID(id)
 
-    fun getPositionByID(id: Int): Flow<Position> = positionDao.getPositionByID(id)
 }

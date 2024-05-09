@@ -5,17 +5,17 @@ import com.example.ibustartup.backend.dao.UserDao
 import com.example.ibustartup.backend.tables.User
 import kotlinx.coroutines.flow.Flow
 
-class UserRepository(private val userDao: UserDao) {
+class UserRepository(private val userDao: UserDao): BaseRepository<User> {
+    override suspend fun insert(t: User) = userDao.insertUser(t)
 
-    suspend fun upsertUser(user: User) = userDao.upsertUser(user)
+    override suspend fun update(t: User) = userDao.updateUser(t)
 
-    suspend fun insertUser(user: User) = userDao.insertUser(user)
+    override suspend fun delete(t: User) = userDao.deleteUser(t)
 
-    suspend fun updateUser(user: User) = userDao.updateUser(user)
+    override suspend fun upsert(t: User) = userDao.upsertUser(t)
 
-    suspend fun deleteUser(user: User) = userDao.deleteUser(user)
+    override fun getAll(): Flow<List<User>> = userDao.getAllUsers()
 
-    fun getAllUsers(): Flow<List<User>> = userDao.getAllUsers()
+    override fun getByID(id: Int): Flow<User> = userDao.getUserByID(id)
 
-    fun getUserByID(id: Int): Flow<User> = userDao.getUserByID(id)
 }

@@ -4,17 +4,17 @@ import com.example.ibustartup.backend.dao.CommentDao
 import com.example.ibustartup.backend.tables.Comment
 import kotlinx.coroutines.flow.Flow
 
-class CommentRepository(private val commentDao: CommentDao) {
+class CommentRepository(private val commentDao: CommentDao): BaseRepository<Comment> {
+    override suspend fun insert(t: Comment) = commentDao.insertComment(t)
 
-    suspend fun upsertComment(comment: Comment) = commentDao.upsertComment(comment)
+    override suspend fun update(t: Comment) = commentDao.updateComment(t)
 
-    suspend fun insertComment(comment: Comment) = commentDao.insertComment(comment)
+    override suspend fun delete(t: Comment) = commentDao.deleteComment(t)
 
-    suspend fun updateComment(comment: Comment) = commentDao.updateComment(comment)
+    override suspend fun upsert(t: Comment) = commentDao.upsertComment(t)
 
-    suspend fun deleteComment(comment: Comment) = commentDao.deleteComment(comment)
+    override fun getAll(): Flow<List<Comment>> = commentDao.getAllComments()
 
-    fun getAllComments(): Flow<List<Comment>> = commentDao.getAllComments()
+    override fun getByID(id: Int): Flow<Comment> = commentDao.getCommentByID(id)
 
-    fun getCommentByID(id: Int): Flow<Comment> = commentDao.getCommentByID(id)
 }

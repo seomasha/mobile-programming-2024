@@ -4,17 +4,17 @@ import com.example.ibustartup.backend.dao.InvestorApplyDao
 import com.example.ibustartup.backend.tables.InvestorApply
 import kotlinx.coroutines.flow.Flow
 
-class InvestorApplyRepository(private val investorApplyDao: InvestorApplyDao) {
+class InvestorApplyRepository(private val investorApplyDao: InvestorApplyDao): BaseRepository<InvestorApply> {
+    override suspend fun insert(t: InvestorApply) = investorApplyDao.insertInvestorApply(t)
 
-    suspend fun upsertInvestorApply(investorApply: InvestorApply) = investorApplyDao.upsertInvestorApply(investorApply)
+    override suspend fun update(t: InvestorApply) = investorApplyDao.updateInvestorApply(t)
 
-    suspend fun insertInvestorApply(investorApply: InvestorApply) = investorApplyDao.insertInvestorApply(investorApply)
+    override suspend fun delete(t: InvestorApply) = investorApplyDao.deleteInvestorApply(t)
 
-    suspend fun updateInvestorApply(investorApply: InvestorApply) = investorApplyDao.updateInvestorApply(investorApply)
+    override suspend fun upsert(t: InvestorApply) = investorApplyDao.upsertInvestorApply(t)
 
-    suspend fun deleteInvestorApply(investorApply: InvestorApply) = investorApplyDao.deleteInvestorApply(investorApply)
+    override fun getAll(): Flow<List<InvestorApply>> = investorApplyDao.getAllInvestorApplies()
 
-    fun getAllInvestorApplies(): Flow<List<InvestorApply>> = investorApplyDao.getAllInvestorApplies()
+    override fun getByID(id: Int): Flow<InvestorApply> = investorApplyDao.getInvestorApplyByID(id)
 
-    fun getInvestorApplyByID(id: Int) = investorApplyDao.getInvestorApplyByID(id)
 }
