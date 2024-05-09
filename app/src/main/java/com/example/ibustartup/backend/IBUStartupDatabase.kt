@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.ibustartup.backend.dao.CommentDao
+import com.example.ibustartup.backend.dao.InvestorApplyDao
+import com.example.ibustartup.backend.dao.PositionDao
 import com.example.ibustartup.backend.dao.UserDao
 import com.example.ibustartup.backend.tables.User
 
@@ -15,6 +18,9 @@ import com.example.ibustartup.backend.tables.User
 abstract class IBUStartupDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
+    abstract fun commentDao(): CommentDao
+    abstract fun investorApplyDao(): InvestorApplyDao
+    abstract fun positionDao(): PositionDao
 
     companion object {
         @Volatile
