@@ -1,16 +1,21 @@
 package com.example.ibustartup.backend.repositories
 
+import androidx.lifecycle.LiveData
+import com.example.ibustartup.backend.dao.UserDao
 import com.example.ibustartup.backend.tables.User
 import kotlinx.coroutines.flow.Flow
 
-interface UserRepository {
-    fun getAllUsersStream(): Flow<List<User>>
+class UserRepository(private val userDao: UserDao): BaseRepository<User> {
+    override suspend fun insert(t: User) = userDao.insertUser(t)
 
-    fun getItemStream(id: Int): Flow<User?>
+    override suspend fun update(t: User) = userDao.updateUser(t)
 
-    suspend fun insertUser(user: User)
+    override suspend fun delete(t: User) = userDao.deleteUser(t)
 
-    suspend fun deleteUser(user: User)
+    override suspend fun upsert(t: User) = userDao.upsertUser(t)
 
-    suspend fun updateUser(user: User)
+    override fun getAll(): Flow<List<User>> = userDao.getAllUsers()
+
+    override fun getByID(id: Int): Flow<User> = userDao.getUserByID(id)
+
 }

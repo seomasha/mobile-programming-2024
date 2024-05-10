@@ -26,6 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import com.example.ibustartup.backend.IBUStartupDatabase
+import com.example.ibustartup.backend.tables.User
 import com.example.ibustartup.ui.components.BottomBarNavigation
 import com.example.ibustartup.ui.components.Header
 import com.example.ibustartup.ui.components.Navigation
@@ -33,15 +36,24 @@ import com.example.ibustartup.ui.screens.SignIn
 import com.example.ibustartup.ui.screens.SignUp
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.IBUStartupTheme
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-//Add composables to the routes
+//Add composable to the routes
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            /*
+            val user = User("Sead", "Masetic", "maseticsead@gmail.com", "sony")
+            GlobalScope.launch {
+                IBUStartupDatabase.getDatabase(applicationContext).userDao().insertUser(user)
+            }
+            */
             IBUStartupTheme {
                 val navController = rememberNavController()
+
                 Scaffold(bottomBar = {
                     if (navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignIn" && navController.currentBackStackEntryAsState()?.value?.destination?.route != "SignUp") {
                         BottomBarNavigation(
@@ -89,16 +101,21 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    //Log.d("ROUTE", navController.currentBackStackEntryAsState()?.value?.destination?.route ?: "Not a route")
+                    Log.d(
+                        "ROUTE",
+                        navController.currentBackStackEntryAsState()?.value?.destination?.route
+                            ?: "Not a route"
+                    )
                 }) {
                     if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignIn") {
                         SignIn(navController = navController)
-                    } else if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignIn") {
+                    } else if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignUp") {
                         SignUp(navController = navController)
                     } else {
                         Navigation(navController = navController)
                     }
                 }
+
             }
         }
     }

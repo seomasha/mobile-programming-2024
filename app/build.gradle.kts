@@ -61,7 +61,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation ("androidx.navigation:navigation-compose:2.7.6")
     implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
-    implementation("androidx.core:core-ktx:1.12.0")
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
     testImplementation(libs.junit)
