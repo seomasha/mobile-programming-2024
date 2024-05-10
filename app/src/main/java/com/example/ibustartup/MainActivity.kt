@@ -45,11 +45,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            /*val user = User("Sead", "Masetic", "maseticsead@gmail.com", "sony")
+            /*
+            val user = User("Sead", "Masetic", "maseticsead@gmail.com", "sony")
             GlobalScope.launch {
                 IBUStartupDatabase.getDatabase(applicationContext).userDao().insertUser(user)
             }
-             */
+            */
             IBUStartupTheme {
                 val navController = rememberNavController()
 

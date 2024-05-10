@@ -45,10 +45,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.dao.UserDao
-import com.example.ibustartup.backend.events.UserEvent
-import com.example.ibustartup.backend.state.UserState
 import com.example.ibustartup.backend.tables.User
-import com.example.ibustartup.backend.viewmodels.UserViewModel
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.LightBlue
 
@@ -64,7 +61,6 @@ fun SignUp(navController: NavController) {
     var checkEmail by remember { mutableStateOf(false) }
     var checkPasswordRepeat by remember { mutableStateOf(false) }
 
-    //val userViewModel: UserViewModel = viewModel()
 
     Column(
         modifier = Modifier

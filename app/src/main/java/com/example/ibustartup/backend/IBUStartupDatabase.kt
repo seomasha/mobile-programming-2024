@@ -8,11 +8,18 @@ import com.example.ibustartup.backend.dao.CommentDao
 import com.example.ibustartup.backend.dao.InvestorApplyDao
 import com.example.ibustartup.backend.dao.PositionDao
 import com.example.ibustartup.backend.dao.UserDao
+import com.example.ibustartup.backend.tables.Comment
+import com.example.ibustartup.backend.tables.Friends
+import com.example.ibustartup.backend.tables.Investor
+import com.example.ibustartup.backend.tables.InvestorApply
+import com.example.ibustartup.backend.tables.Notification
+import com.example.ibustartup.backend.tables.Position
+import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.backend.tables.User
 
 @Database(
-    entities = [User::class],
-    version = 1,
+    entities = [User::class, Comment::class, Friends::class, Investor::class, InvestorApply::class, Notification::class, Position::class, Startup::class],
+    version = 2,
     exportSchema = false
 )
 abstract class IBUStartupDatabase : RoomDatabase() {
@@ -29,9 +36,7 @@ abstract class IBUStartupDatabase : RoomDatabase() {
         fun getDatabase(context: Context): IBUStartupDatabase {
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(
-                    context,
-                    IBUStartupDatabase::class.java,
-                    "ibu_startup_database"
+                    context, IBUStartupDatabase::class.java, "ibu_startup_database"
                 ).fallbackToDestructiveMigration().build().also { Instance = it }
             }
         }

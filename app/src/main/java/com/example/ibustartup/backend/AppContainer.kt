@@ -5,7 +5,6 @@ import com.example.ibustartup.backend.repositories.CommentRepository
 import com.example.ibustartup.backend.repositories.InvestorApplyRepository
 import com.example.ibustartup.backend.repositories.PositionRepository
 import com.example.ibustartup.backend.repositories.UserRepository
-import com.example.ibustartup.backend.tables.InvestorApply
 
 
 interface AppContainer {
