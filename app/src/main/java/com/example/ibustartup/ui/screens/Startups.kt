@@ -61,7 +61,7 @@ fun Startups(startups: List<StartupData>){
                     horizontalArrangement = Arrangement.Center
                 ){
                     Text(
-                        text = "Your friend requests",
+                        text = "Filters",
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         color = DarkBlue

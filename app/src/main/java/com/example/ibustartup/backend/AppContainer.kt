@@ -1,15 +1,34 @@
 package com.example.ibustartup.backend
 
 import android.content.Context
-import com.example.ibustartup.backend.repositories.OfflineUserRepository
+import com.example.ibustartup.backend.repositories.CommentRepository
+import com.example.ibustartup.backend.repositories.InvestorApplyRepository
+import com.example.ibustartup.backend.repositories.PositionRepository
 import com.example.ibustartup.backend.repositories.UserRepository
 
+
 interface AppContainer {
-    val usersRepository: UserRepository
+    val commentRepository: CommentRepository
+    val userRepository: UserRepository
+    val positionRepository: PositionRepository
+    val investorApplyRepository: InvestorApplyRepository
 }
 
-class AppDataContainer(private val context: Context) : AppContainer {
-    override val usersRepository: UserRepository by lazy {
-        OfflineUserRepository(IBUStartupDatabase.getDatabase(context).userDao())
+class AppDataContainer(private val context: Context): AppContainer {
+    override val commentRepository: CommentRepository by lazy {
+        CommentRepository(IBUStartupDatabase.getDatabase(context).commentDao())
     }
+
+    override val userRepository: UserRepository by lazy {
+        UserRepository(IBUStartupDatabase.getDatabase(context).userDao())
+    }
+
+    override val positionRepository: PositionRepository by lazy {
+        PositionRepository(IBUStartupDatabase.getDatabase(context).positionDao())
+    }
+
+    override val investorApplyRepository: InvestorApplyRepository by lazy {
+        InvestorApplyRepository(IBUStartupDatabase.getDatabase(context).investorApplyDao())
+    }
+
 }

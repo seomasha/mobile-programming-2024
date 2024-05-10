@@ -18,6 +18,7 @@ import com.example.ibustartup.ui.screens.Home
 import com.example.ibustartup.ui.screens.MyProfile
 import com.example.ibustartup.ui.screens.SignIn
 import com.example.ibustartup.ui.screens.SignUp
+import com.example.ibustartup.ui.screens.Startups
 import com.example.ibustartup.ui.theme.GrayStroke
 
 @Composable
@@ -58,7 +59,7 @@ fun Navigation(navController: NavHostController) {
             Home(positions = positions, modifier = Modifier)
         }
         composable("Startups") {
-            Text(text = "Startups")
+            Startups()
         }
         composable("Friends") {
             Text(text = "Friends")

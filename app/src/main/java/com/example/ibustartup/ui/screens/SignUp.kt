@@ -40,9 +40,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
+import com.example.ibustartup.backend.dao.UserDao
+import com.example.ibustartup.backend.tables.User
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.LightBlue
 
@@ -57,6 +60,7 @@ fun SignUp(navController: NavController) {
     var checkPassword by remember { mutableStateOf(false) }
     var checkEmail by remember { mutableStateOf(false) }
     var checkPasswordRepeat by remember { mutableStateOf(false) }
+
 
     Column(
         modifier = Modifier
@@ -314,6 +318,12 @@ fun SignUp(navController: NavController) {
                 checkPasswordRepeat = !passwordMatch(password, passwordRepeat)
                 checkPassword = !isValidPassword(password)
                 checkEmail = !checkEmail(email)
+                /*
+                if(checkPassword && !checkEmail) {
+                    userViewModel.onEvent(UserEvent.SaveUser)
+                }
+
+                 */
             },
             modifier = Modifier
                 .fillMaxWidth()
