@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -34,20 +35,21 @@ import androidx.compose.ui.unit.sp
 import com.example.ibustartup.R
 import com.example.ibustartup.data.FriendData
 import com.example.ibustartup.ui.components.Card
+import com.example.ibustartup.data.FriendRequestData
 import com.example.ibustartup.ui.components.FriendRequest
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 
 @Composable
-fun Friends(friends: List<FriendData>) {
+fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(0.95f)
+                .fillMaxWidth()
                 .padding(top = 70.dp)
                 .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp))
                 .background(color = Color.White, shape = RoundedCornerShape(8.dp))
@@ -62,7 +64,9 @@ fun Friends(friends: List<FriendData>) {
                     .size(125.dp)
                     .clip(shape = CircleShape)
             )
-            Column {
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
                 Text(
                     text = "Sead Masetic",
                     fontSize = 22.sp,
@@ -85,9 +89,11 @@ fun Friends(friends: List<FriendData>) {
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
-        Column(
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth(0.95f)
+                .fillMaxWidth()
+                .size(180.dp)
                 .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp))
                 .background(
                     color = Color.White, shape = RoundedCornerShape(8.dp)
@@ -106,14 +112,18 @@ fun Friends(friends: List<FriendData>) {
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-            FriendRequest(name = "Sead Masetic")
-            FriendRequest(name = "Alen Kursumlija")
-            FriendRequest(name = "Fikret Zajmovic")
-        }
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Spacer(modifier = Modifier.height(20.dp))
             LazyColumn {
-                itemsIndexed(friends.chunked(2)) { _, friend ->
+                items(friendRequests) { friendRequest ->
+                    Row {
+                        FriendRequest(friendRequest)
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyColumn {
+            itemsIndexed(friends.chunked(2)) { _, friend ->
                     Row(modifier = Modifier.padding(12.dp)) {
                         friend.forEach { friendData ->
                             Card(
@@ -126,7 +136,6 @@ fun Friends(friends: List<FriendData>) {
                         }
                     }
                 }
-            }
         }
     }
 }
@@ -161,5 +170,27 @@ fun FriendsPreview() {
             logoImage = R.drawable.profile
         ),
     )
-    Friends(friends)
+    val friendsRequest = listOf(
+        FriendRequestData(
+            message = "Sead Masetic wants to be your friend",
+            logoImage = R.drawable.profile
+        ),
+        FriendRequestData(
+            message = "Sead Masetic",
+            logoImage = R.drawable.profile
+        ),
+        FriendRequestData(
+            message = "Sead Masetic",
+            logoImage = R.drawable.profile
+        ),
+        FriendRequestData(
+            message = "Sead Masetic",
+            logoImage = R.drawable.profile
+        ),
+        FriendRequestData(
+            message = "Sead Masetic",
+            logoImage = R.drawable.profile
+        ),
+    )
+    Friends(friends, friendsRequest)
 }

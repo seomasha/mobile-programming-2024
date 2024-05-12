@@ -147,9 +147,6 @@ fun Startups(startups: List<StartupData>) {
                             image = startupData.logoImage,
                             onClick = {})
                         Spacer(modifier = Modifier.width(12.dp))
-                    }
-                }
-            }
         }
     }
 }

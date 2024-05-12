@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ibustartup.R
+import com.example.ibustartup.data.FriendRequestData
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
