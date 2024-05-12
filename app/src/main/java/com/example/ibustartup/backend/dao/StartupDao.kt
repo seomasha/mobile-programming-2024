@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 interface StartupDao {
     @Upsert
     suspend fun upsertStartup(startup: Startup)
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertStartup(startup: Startup)
 

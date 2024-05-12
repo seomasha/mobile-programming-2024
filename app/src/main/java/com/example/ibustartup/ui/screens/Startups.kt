@@ -137,9 +137,12 @@ fun Startups(startups: List<StartupData>){
         }
         LazyColumn {
             items(startups.chunked(2)) { pairOfStartups ->
-                Row(modifier = Modifier.padding(12.dp)) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
                     Startup(startup = pairOfStartups[0])
-                    Spacer(modifier = Modifier.width(8.dp))
                     if (pairOfStartups.size > 1) {
                         Startup(startup = pairOfStartups[1])
                     }

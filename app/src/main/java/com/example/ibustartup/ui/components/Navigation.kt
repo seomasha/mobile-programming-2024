@@ -59,7 +59,7 @@ fun Navigation(navController: NavHostController) {
             Home(positions = positions, modifier = Modifier)
         }
         composable("Startups") {
-            Startups()
+            Text(text = "Startups")
         }
         composable("Friends") {
             Text(text = "Friends")

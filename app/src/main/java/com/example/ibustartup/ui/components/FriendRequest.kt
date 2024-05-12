@@ -26,12 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ibustartup.R
+import com.example.ibustartup.data.FriendRequestData
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
-fun FriendRequest() {
+fun FriendRequest(friendRequestData: FriendRequestData) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -41,7 +42,7 @@ fun FriendRequest() {
             .padding(8.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.profile),
+            painter = painterResource(friendRequestData.logoImage),
             contentDescription = "Profile",
             modifier = Modifier
                 .size(30.dp)
@@ -49,7 +50,7 @@ fun FriendRequest() {
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(
-            text = "Some text here",
+            text = friendRequestData.message,
             color = LightBlue,
             modifier = Modifier.align(Alignment.CenterVertically),
             fontSize = 12.sp
@@ -86,5 +87,5 @@ fun FriendRequest() {
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
 fun FriendRequestPreview() {
-    FriendRequest()
+    FriendRequest(friendRequestData = FriendRequestData("Some text here", R.drawable.profile))
 }
