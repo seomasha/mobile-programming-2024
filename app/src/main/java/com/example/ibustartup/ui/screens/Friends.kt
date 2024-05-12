@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -26,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,18 +34,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ibustartup.R
 import com.example.ibustartup.data.FriendData
+import com.example.ibustartup.ui.components.Card
 import com.example.ibustartup.data.FriendRequestData
-import com.example.ibustartup.ui.components.AddFriend
 import com.example.ibustartup.ui.components.FriendRequest
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
-import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
 fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) {
-    Column (
-        modifier = Modifier.fillMaxSize()
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier
@@ -123,15 +123,19 @@ fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) 
         }
         Spacer(modifier = Modifier.height(10.dp))
         LazyColumn {
-            items(friends.chunked(2)) { pairOfFriends ->
-                Row(modifier = Modifier.padding(12.dp)) {
-                    AddFriend(friend = pairOfFriends[0])
-                    Spacer(modifier = Modifier.width(8.dp))
-                    if (pairOfFriends.size > 1) {
-                        AddFriend(friend = pairOfFriends[1])
+            itemsIndexed(friends.chunked(2)) { _, friend ->
+                    Row(modifier = Modifier.padding(12.dp)) {
+                        friend.forEach { friendData ->
+                            Card(
+                                name = friendData.name,
+                                username = friendData.username,
+                                buttonText = "Add friend",
+                                image = friendData.logoImage,
+                                onClick = {})
+                            Spacer(modifier = Modifier.width(12.dp))
+                        }
                     }
                 }
-            }
         }
     }
 }
