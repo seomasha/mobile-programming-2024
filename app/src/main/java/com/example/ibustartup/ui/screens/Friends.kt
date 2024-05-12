@@ -124,18 +124,18 @@ fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) 
         Spacer(modifier = Modifier.height(10.dp))
         LazyColumn {
             itemsIndexed(friends.chunked(2)) { _, friend ->
-                    Row(modifier = Modifier.padding(12.dp)) {
-                        friend.forEach { friendData ->
-                            Card(
-                                name = friendData.name,
-                                username = friendData.username,
-                                buttonText = "Add friend",
-                                image = friendData.logoImage,
-                                onClick = {})
-                            Spacer(modifier = Modifier.width(12.dp))
-                        }
+                Row(modifier = Modifier.padding(12.dp)) {
+                    friend.forEach { friendData ->
+                        Card(
+                            name = friendData.name,
+                            username = friendData.username,
+                            buttonText = "Add friend",
+                            image = friendData.logoImage,
+                            onClick = {})
+                        Spacer(modifier = Modifier.width(12.dp))
                     }
                 }
+            }
         }
     }
 }
