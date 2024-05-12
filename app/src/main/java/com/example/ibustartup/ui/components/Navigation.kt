@@ -16,6 +16,7 @@ import com.example.ibustartup.R
 import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.data.CommentData
 import com.example.ibustartup.data.FriendData
+import com.example.ibustartup.data.FriendRequestData
 import com.example.ibustartup.data.InvestorData
 import com.example.ibustartup.data.NotificationData
 import com.example.ibustartup.data.PositionData
@@ -83,7 +84,11 @@ fun Navigation(navController: NavHostController) {
                 FriendData("Sead", "Sead", R.drawable.positionimage),
                 FriendData("Sead", "Sead", R.drawable.positionimage)
             )
-            Friends(friends = friends)
+            val friendRequests = listOf(
+                FriendRequestData("Sead", R.drawable.positionimage),
+                FriendRequestData("Testiranje", R.drawable.positionimage)
+            )
+            Friends(friends = friends, friendRequests)
         }
         composable("Activity") {
             val notifications = listOf(

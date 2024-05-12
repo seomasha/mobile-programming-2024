@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -55,7 +56,7 @@ fun Card(name: String, username: String, buttonText: String, image: Int, onClick
             onClick = { onClick }, colors = ButtonDefaults.buttonColors(
                 containerColor = LightBlue
             )
-        ) {
+        , modifier = Modifier.padding(bottom = 12.dp)) {
             Text(text = buttonText)
         }
     }

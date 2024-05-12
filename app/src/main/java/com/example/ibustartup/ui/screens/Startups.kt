@@ -153,36 +153,3 @@ fun Startups(startups: List<StartupData>) {
         }
     }
 }
-
-@Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
-@Composable
-fun StartupsPreview() {
-    val startups = listOf(
-        StartupData(
-            name = "Startup 1",
-            username = "username1",
-            logoImage = R.drawable.profile
-        ),
-        StartupData(
-            name = "Startup 2",
-            username = "username2",
-            logoImage = R.drawable.profile
-        ),
-        StartupData(
-            name = "Startup 3",
-            username = "username3",
-            logoImage = R.drawable.profile
-        ),
-        StartupData(
-            name = "Startup 4",
-            username = "username4",
-            logoImage = R.drawable.profile
-        ),
-        StartupData(
-            name = "Startup 5",
-            username = "username5",
-            logoImage = R.drawable.profile
-        ),
-    )
-    Startups(startups)
-}
