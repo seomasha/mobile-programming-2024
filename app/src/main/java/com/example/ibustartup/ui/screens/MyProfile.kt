@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -30,15 +32,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
-import com.example.ibustartup.ui.components.BottomBarNavigation
-import com.example.ibustartup.ui.components.Header
+import com.example.ibustartup.data.StartupData
+import com.example.ibustartup.ui.components.Card
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
-fun MyProfile() {
+fun MyProfile(startups: List<StartupData>) {
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         val navController = rememberNavController()
         Row(
@@ -194,68 +196,27 @@ fun MyProfile() {
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
-        Row(modifier = Modifier.padding(12.dp)) {
-            Column(
-                modifier = Modifier
-                    .background(
-                        color = Color.White, shape = RoundedCornerShape(8.dp)
-                    )
-                    .size(180.dp, 250.dp)
-                    .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp)),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.positionimage),
-                    contentDescription = "Startup image",
-                    modifier = Modifier.clip(shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(text = "Sead Masetic", fontSize = 16.sp, color = DarkBlue, fontWeight = FontWeight.Bold)
-                Text(text = "@seadmasetic", fontSize = 12.sp, fontWeight = FontWeight.Light)
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(
-                    onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
-                        containerColor = LightBlue
-                    )
-                ) {
-                    Text(text = "Edit startup")
-                }
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Column(
-                modifier = Modifier
-                    .background(
-                        color = Color.White, shape = RoundedCornerShape(8.dp)
-                    )
-                    .size(180.dp, 250.dp)
-                    .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp)),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.positionimage),
-                    contentDescription = "Startup image",
-                    modifier = Modifier.clip(shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(text = "Sead Masetic", fontSize = 16.sp, color = DarkBlue, fontWeight = FontWeight.Bold)
-                Text(text = "@seadmasetic", fontSize = 12.sp, fontWeight = FontWeight.Light)
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(
-                    onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
-                        containerColor = LightBlue
-                    )
-                ) {
-                    Text(text = "Edit startup")
+        LazyColumn(modifier = Modifier.padding(bottom = 80.dp)) {
+            itemsIndexed(startups.chunked(2)) { _, startup ->
+                Row(modifier = Modifier.padding(12.dp)) {
+                    startup.forEach { startupData ->
+                        Card(
+                            name = startupData.name,
+                            username = startupData.username,
+                            buttonText = "Apply",
+                            image = startupData.logoImage,
+                            onClick = {})
+                        Spacer(modifier = Modifier.width(12.dp))
+                    }
                 }
             }
         }
         Spacer(modifier = Modifier.weight(1f))
-        //BottomBarNavigation()
     }
 }
 
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
 fun MyProfilePreview() {
-    MyProfile()
+    //MyProfile()
 }

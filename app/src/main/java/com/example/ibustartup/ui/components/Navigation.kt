@@ -7,15 +7,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.ibustartup.R
+import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.data.CommentData
+import com.example.ibustartup.data.FriendData
+import com.example.ibustartup.data.InvestorData
+import com.example.ibustartup.data.NotificationData
 import com.example.ibustartup.data.PositionData
+import com.example.ibustartup.data.StartupData
+import com.example.ibustartup.ui.screens.Friends
 import com.example.ibustartup.ui.screens.Home
+import com.example.ibustartup.ui.screens.Investors
 import com.example.ibustartup.ui.screens.MyProfile
+import com.example.ibustartup.ui.screens.Notifications
 import com.example.ibustartup.ui.screens.SignIn
 import com.example.ibustartup.ui.screens.SignUp
 import com.example.ibustartup.ui.screens.Startups
@@ -59,19 +68,47 @@ fun Navigation(navController: NavHostController) {
             Home(positions = positions, modifier = Modifier)
         }
         composable("Startups") {
-            Startups()
+            val startups = listOf(
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage)
+            )
+            Startups(startups = startups)
         }
         composable("Friends") {
-            Text(text = "Friends")
+            val friends = listOf(
+                FriendData("Sead", "Sead", R.drawable.positionimage),
+                FriendData("Sead", "Sead", R.drawable.positionimage),
+                FriendData("Sead", "Sead", R.drawable.positionimage)
+            )
+            Friends(friends = friends)
         }
         composable("Activity") {
-            Text(text = "Activity")
+            val notifications = listOf(
+                NotificationData(R.drawable.profile, "Sead Masetic")
+            )
+            Notifications(notifications = notifications)
         }
         composable("Investors") {
-            Text(text = "Investors")
+            val investors = listOf(
+                InvestorData("Sead", "Sead", R.drawable.positionimage),
+                InvestorData("Sead", "Sead", R.drawable.positionimage),
+                InvestorData("Sead", "Sead", R.drawable.positionimage)
+
+            )
+            Investors(investors = investors)
         }
         composable("MyProfile") {
-            MyProfile()
+            val startups = listOf(
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
+                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage)
+            )
+            MyProfile(startups)
         }
         composable("SignIn") {
             SignIn(navController)

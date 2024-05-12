@@ -1,8 +1,10 @@
 package com.example.ibustartup.ui.components
 
+import android.hardware.lights.Light
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +16,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,8 +35,9 @@ import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
-fun FriendRequest() {
-    Row(
+fun FriendRequest(name: String) {
+    Row(horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
@@ -40,45 +45,29 @@ fun FriendRequest() {
             .background(color = LightGray, shape = RoundedCornerShape(8.dp))
             .padding(8.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.profile),
-            contentDescription = "Profile",
-            modifier = Modifier
-                .size(30.dp)
-                .clip(shape = CircleShape)
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(
-            text = "Some text here",
-            color = LightBlue,
-            modifier = Modifier.align(Alignment.CenterVertically),
-            fontSize = 12.sp
-        )
-        Spacer(modifier = Modifier.width(120.dp))
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
-            modifier = Modifier
-                .size(30.dp),
-        ) {
+        Row {
             Image(
-                painter = painterResource(id = R.drawable.checkmark_small),
-                contentDescription = "Accept",
-                colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(Color.White)
+                painter = painterResource(id = R.drawable.profile),
+                contentDescription = "Profile",
+                modifier = Modifier
+                    .size(30.dp)
+                    .clip(shape = CircleShape)
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = name,
+                color = LightBlue,
+                modifier = Modifier.align(Alignment.CenterVertically),
+                fontSize = 12.sp
             )
         }
-        Spacer(modifier = Modifier.width(10.dp))
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-            modifier = Modifier
-                .size(30.dp),
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.decline_sign),
-                contentDescription = "Decline",
-                colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(Color.White)
-            )
+        Row {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(painter = painterResource(id = R.drawable.checkmark), contentDescription = "Checkmark", tint = LightBlue)
+            }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(painter = painterResource(id = R.drawable.close), contentDescription = "Close", tint = Color.Red)
+            }
         }
     }
 }
@@ -86,5 +75,5 @@ fun FriendRequest() {
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
 fun FriendRequestPreview() {
-    FriendRequest()
+    FriendRequest(name = "Sead Masetic")
 }

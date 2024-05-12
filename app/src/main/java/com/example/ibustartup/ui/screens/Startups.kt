@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,21 +32,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ibustartup.R
-import com.example.ibustartup.ui.components.Startup
 import com.example.ibustartup.data.StartupData
+import com.example.ibustartup.ui.components.Card
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 
 @Composable
-fun Startups(startups: List<StartupData>){
+fun Startups(startups: List<StartupData>) {
     var isChecked by remember { mutableStateOf(false) }
     val myCheckedColor = Color(0xFF008DDA)
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
-    ){
+    ) {
+        Spacer(modifier = Modifier.height(48.dp))
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -56,10 +57,10 @@ fun Startups(startups: List<StartupData>){
                 .padding(12.dp),
         ) {
             Column {
-                Row (
+                Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
-                ){
+                ) {
                     Text(
                         text = "Filters",
                         fontSize = 22.sp,
@@ -68,9 +69,9 @@ fun Startups(startups: List<StartupData>){
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                Column (
+                Column(
                     modifier = Modifier.padding(start = 5.dp)
-                ){
+                ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -121,7 +122,7 @@ fun Startups(startups: List<StartupData>){
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                Row (
+                Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -135,13 +136,17 @@ fun Startups(startups: List<StartupData>){
                 }
             }
         }
-        LazyColumn {
-            items(startups.chunked(2)) { pairOfStartups ->
+        LazyColumn(modifier = Modifier.padding(bottom = 80.dp)) {
+            itemsIndexed(startups.chunked(2)) { _, startup ->
                 Row(modifier = Modifier.padding(12.dp)) {
-                    Startup(startup = pairOfStartups[0])
-                    Spacer(modifier = Modifier.width(8.dp))
-                    if (pairOfStartups.size > 1) {
-                        Startup(startup = pairOfStartups[1])
+                    startup.forEach { startupData ->
+                        Card(
+                            name = startupData.name,
+                            username = startupData.username,
+                            buttonText = "Apply",
+                            image = startupData.logoImage,
+                            onClick = {})
+                        Spacer(modifier = Modifier.width(12.dp))
                     }
                 }
             }
@@ -151,7 +156,7 @@ fun Startups(startups: List<StartupData>){
 
 @Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
 @Composable
-fun StartupsPreview(){
+fun StartupsPreview() {
     val startups = listOf(
         StartupData(
             name = "Startup 1",
