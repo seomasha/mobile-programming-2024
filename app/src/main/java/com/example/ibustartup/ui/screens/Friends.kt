@@ -44,16 +44,16 @@ import com.example.ibustartup.ui.theme.LightBlue
 @Composable
 fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(bottom = 90.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.95f)
                 .padding(top = 70.dp)
                 .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp))
                 .background(color = Color.White, shape = RoundedCornerShape(8.dp))
-                .padding(12.dp),
+                .padding(vertical = 24.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -92,13 +92,13 @@ fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) 
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.95f)
                 .size(180.dp)
                 .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp))
                 .background(
                     color = Color.White, shape = RoundedCornerShape(8.dp)
                 )
-                .padding(12.dp)
+                .padding(vertical = 24.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -115,7 +115,7 @@ fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) 
             LazyColumn {
                 items(friendRequests) { friendRequest ->
                     Row {
-                        FriendRequest(friendRequest)
+                        FriendRequest(friendRequest.message)
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
