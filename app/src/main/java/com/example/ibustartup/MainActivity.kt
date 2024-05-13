@@ -27,8 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.example.ibustartup.backend.AppDataContainer
 import com.example.ibustartup.backend.IBUStartupDatabase
+import com.example.ibustartup.backend.dao.UserDao
+import com.example.ibustartup.backend.repositories.UserRepository
 import com.example.ibustartup.backend.tables.User
+import com.example.ibustartup.backend.viewmodels.UserViewModel
 import com.example.ibustartup.ui.components.BottomBarNavigation
 import com.example.ibustartup.ui.components.Header
 import com.example.ibustartup.ui.components.Navigation
@@ -41,9 +45,15 @@ import kotlinx.coroutines.launch
 
 //Add composable to the routes
 class MainActivity : ComponentActivity() {
+    private lateinit var userViewModel: UserViewModel
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val appContainer = AppDataContainer(applicationContext)
+
+        userViewModel = UserViewModel(appContainer.userRepository)
+
         setContent {
             /*
             val user = User("Sead", "Masetic", "maseticsead@gmail.com", "sony")
@@ -65,7 +75,14 @@ class MainActivity : ComponentActivity() {
 
                 }, floatingActionButton = {
                     if (navController.currentBackStackEntryAsState().value?.destination?.route == "Home") {
-                        FloatingActionButton(onClick = { /*TODO*/ }) {
+                        FloatingActionButton(onClick = {
+                            /*
+                            val user = User("Sead", "Sead" , "sead", "sead")
+                            GlobalScope.launch {
+                                AppDataContainer(applicationContext).userRepository.insert(user)
+                            }
+                             */
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.add),
                                 contentDescription = "Home FAB"
@@ -110,9 +127,9 @@ class MainActivity : ComponentActivity() {
                     if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignIn") {
                         SignIn(navController = navController)
                     } else if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignUp") {
-                        SignUp(navController = navController)
+                        SignUp(navController = navController, userViewModel = userViewModel)
                     } else {
-                        Navigation(navController = navController)
+                        Navigation(navController = navController, userViewModel = userViewModel)
                     }
                 }
 

@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,11 +47,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.dao.UserDao
 import com.example.ibustartup.backend.tables.User
+import com.example.ibustartup.backend.viewmodels.UIState
+import com.example.ibustartup.backend.viewmodels.UserEvent
+import com.example.ibustartup.backend.viewmodels.UserViewModel
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.LightBlue
 
 @Composable
-fun SignUp(navController: NavController) {
+fun SignUp(navController: NavController, userViewModel: UserViewModel) {
     var name by remember { mutableStateOf("") }
     var surname by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -318,12 +322,11 @@ fun SignUp(navController: NavController) {
                 checkPasswordRepeat = !passwordMatch(password, passwordRepeat)
                 checkPassword = !isValidPassword(password)
                 checkEmail = !checkEmail(email)
-                /*
-                if(checkPassword && !checkEmail) {
-                    userViewModel.onEvent(UserEvent.SaveUser)
-                }
 
-                 */
+                if(!checkPassword && !checkEmail && !checkPasswordRepeat) {
+                    val user = User(firstName = name, lastName = surname, email = email, password = password)
+                    userViewModel.onEvent(UserEvent.SaveUser(user))
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -336,7 +339,12 @@ fun SignUp(navController: NavController) {
                 text = "Sign Up",
                 fontWeight = FontWeight.Bold
             )
-
+        }
+        val uiState by userViewModel.uiState.observeAsState(initial = UIState.Loading)
+        when (uiState) {
+            is UIState.Success -> { /* Show a Snackbar with a success message */ }
+            is UIState.Error -> { /* Show a Snackbar with the error message */ }
+            else -> { /* Do nothing when the state is Loading */ }
         }
     }
 }
