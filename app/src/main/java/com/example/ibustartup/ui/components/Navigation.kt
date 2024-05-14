@@ -34,7 +34,7 @@ import com.example.ibustartup.ui.theme.GrayStroke
 
 @Composable
 fun Navigation(navController: NavHostController, userViewModel: UserViewModel) {
-    NavHost(navController = navController, startDestination = "Home") {
+    NavHost(navController = navController, startDestination = "SignUp") {
         composable("Home") {
             val comments = mutableListOf(
                 CommentData(
@@ -117,7 +117,7 @@ fun Navigation(navController: NavHostController, userViewModel: UserViewModel) {
             MyProfile(startups)
         }
         composable("SignIn") {
-            SignIn(navController)
+            SignIn(navController, userViewModel)
         }
         composable("SignUp") {
             SignUp(navController, userViewModel)

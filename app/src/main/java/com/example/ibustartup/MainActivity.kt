@@ -114,7 +114,7 @@ class MainActivity : ComponentActivity() {
                                         bottomEnd = 15.dp,
                                         bottomStart = 15.dp
                                     )
-                                ), navController = navController
+                                ), navController = navController, userViewModel = userViewModel
                         )
                     }
 
@@ -125,7 +125,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }) {
                     if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignIn") {
-                        SignIn(navController = navController)
+                        SignIn(navController = navController, userViewModel = userViewModel)
                     } else if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignUp") {
                         SignUp(navController = navController, userViewModel = userViewModel)
                     } else {

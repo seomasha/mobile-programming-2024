@@ -1,5 +1,6 @@
 package com.example.ibustartup.backend.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -9,6 +10,7 @@ import androidx.room.Upsert
 import com.example.ibustartup.backend.tables.Notification
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface NotificationDao {
        @Upsert
         suspend fun upsertNotification(notification: Notification)

@@ -34,6 +34,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
+import com.example.ibustartup.backend.viewmodels.UIState
+import com.example.ibustartup.backend.viewmodels.UserViewModel
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.GrayBackground
 import com.example.ibustartup.ui.theme.GrayStroke
@@ -41,7 +43,7 @@ import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
-fun Header(modifier: Modifier = Modifier, navController: NavController) {
+fun Header(modifier: Modifier = Modifier, navController: NavController, userViewModel: UserViewModel) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -59,6 +61,7 @@ fun Header(modifier: Modifier = Modifier, navController: NavController) {
         IconButton(
             onClick = {
                 navController.navigate("SignUp")
+                userViewModel.uiState.value = UIState.Loading
             }, modifier = Modifier.size(25.dp)
         ) {
             Icon(

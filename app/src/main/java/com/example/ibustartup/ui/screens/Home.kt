@@ -58,44 +58,6 @@ fun Home(positions: List<PositionData>, modifier: Modifier) {
         modifier = Modifier
             .fillMaxSize().padding(top = 50.dp, bottom = 100.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(200.dp, 70.dp)
-                .padding(12.dp)
-                .background(color = Color.White, shape = RoundedCornerShape(8.dp))
-                .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp)),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(modifier = Modifier.width(8.dp))
-            Image(
-                painter = painterResource(id = R.drawable.profile),
-                contentDescription = "Profile picture",
-                modifier = Modifier
-                    .size(30.dp)
-                    .clip(shape = CircleShape)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.95f)
-                    .padding(6.dp)
-                    .background(color = LightGray, shape = RoundedCornerShape(8.dp))
-                    .border(width = 2.dp, color = GrayStroke, shape = RoundedCornerShape(8.dp))
-            ) {
-                Button(
-                    onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent
-                    ), modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        text = "Create a new position",
-                        color = LightBlue,
-                        fontSize = 12.sp,
-                    )
-                }
-            }
-        }
         LazyColumn {
             items(positions) { position ->
                 Position(position = position)
