@@ -18,4 +18,5 @@ class UserRepository(private val userDao: UserDao): BaseRepository<User> {
 
     override fun getByID(id: Int): Flow<User> = userDao.getUserByID(id)
 
+    fun getByEmail(email: String): Flow<User?> = userDao.getUserByEmail(email)
 }

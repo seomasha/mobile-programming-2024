@@ -5,8 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.ibustartup.backend.dao.CommentDao
+import com.example.ibustartup.backend.dao.FriendDao
 import com.example.ibustartup.backend.dao.InvestorApplyDao
+import com.example.ibustartup.backend.dao.InvestorDao
+import com.example.ibustartup.backend.dao.NotificationDao
 import com.example.ibustartup.backend.dao.PositionDao
+import com.example.ibustartup.backend.dao.StartupDao
 import com.example.ibustartup.backend.dao.UserDao
 import com.example.ibustartup.backend.tables.Comment
 import com.example.ibustartup.backend.tables.Friends
@@ -28,6 +32,11 @@ abstract class IBUStartupDatabase : RoomDatabase() {
     abstract fun commentDao(): CommentDao
     abstract fun investorApplyDao(): InvestorApplyDao
     abstract fun positionDao(): PositionDao
+    abstract fun friendDao(): FriendDao
+    abstract fun investorDao(): InvestorDao
+    abstract fun notificationDao(): NotificationDao
+    abstract fun startupDao(): StartupDao
+
 
     companion object {
         @Volatile

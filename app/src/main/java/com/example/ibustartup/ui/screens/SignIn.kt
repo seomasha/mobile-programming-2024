@@ -17,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -30,6 +31,7 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,12 +52,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
+import com.example.ibustartup.backend.viewmodels.UIState
+import com.example.ibustartup.backend.viewmodels.UserEvent
+import com.example.ibustartup.backend.viewmodels.UserViewModel
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightBlueBackground
 
 @Composable
-fun SignIn(navController: NavController) {
+fun SignIn(navController: NavController, userViewModel: UserViewModel) {
 
     var email by remember {
         mutableStateOf("");
@@ -68,6 +73,9 @@ fun SignIn(navController: NavController) {
     var passwordVisible by remember {
         mutableStateOf(false)
     }
+
+    var alertDialogMessage by remember { mutableStateOf(String()) }
+    var showDialog by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
@@ -153,6 +161,7 @@ fun SignIn(navController: NavController) {
         Spacer(modifier = Modifier.height(54.dp))
 
         Button(onClick = {
+            userViewModel.resetUIState()
             navController.navigate("SignUp")
         }, colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
@@ -167,7 +176,7 @@ fun SignIn(navController: NavController) {
         Spacer(modifier = Modifier.height(54.dp))
         Button(
             onClick = {
-                /* TODO */
+                userViewModel.onEvent(UserEvent.Login(email, password))
             }, modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .align(Alignment.CenterHorizontally),
@@ -178,6 +187,33 @@ fun SignIn(navController: NavController) {
             Text("Sign in")
         }
 
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Error") },
+                text = { Text(alertDialogMessage) },
+                confirmButton = {
+                    Button(onClick = {
+                        showDialog = false
+                        userViewModel.resetUIState()
+                    }) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+
+
+        val uiState by userViewModel.uiState.observeAsState(initial = UIState.Loading)
+
+        when(uiState) {
+            is UIState.LoggedIn -> navController.navigate("Home")
+            is UIState.Error -> {
+                alertDialogMessage = (uiState as UIState.Error).message
+                showDialog = true
+            }
+            else -> {}
+        }
     }
 }
 

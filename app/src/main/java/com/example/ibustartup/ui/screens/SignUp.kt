@@ -1,6 +1,7 @@
 package com.example.ibustartup.ui.screens
 
 import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,20 +16,26 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -46,11 +53,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.dao.UserDao
 import com.example.ibustartup.backend.tables.User
+import com.example.ibustartup.backend.viewmodels.UIState
+import com.example.ibustartup.backend.viewmodels.UserEvent
+import com.example.ibustartup.backend.viewmodels.UserViewModel
 import com.example.ibustartup.ui.theme.DarkBlue
 import com.example.ibustartup.ui.theme.LightBlue
 
 @Composable
-fun SignUp(navController: NavController) {
+fun SignUp(navController: NavController, userViewModel: UserViewModel) {
     var name by remember { mutableStateOf("") }
     var surname by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -61,6 +71,10 @@ fun SignUp(navController: NavController) {
     var checkEmail by remember { mutableStateOf(false) }
     var checkPasswordRepeat by remember { mutableStateOf(false) }
 
+    var alertDialogMessage by remember { mutableStateOf(String()) }
+    var showDialog by remember { mutableStateOf(false) }
+
+    val uiState by userViewModel.uiState.observeAsState(initial = UIState.Registering)
 
     Column(
         modifier = Modifier
@@ -197,15 +211,10 @@ fun SignUp(navController: NavController) {
             )
         )
 
-        if (checkEmail) {
-            Text(text = "Invalid email addres", color = Color.Red, fontSize = 12.sp)
-        }
-
         OutlinedTextField(
             value = password,
             onValueChange = {
                 password = it
-                checkPassword = isValidPassword(password)
             },
             label = {
                 Text(text = "Your password", fontWeight = FontWeight.Light)
@@ -249,14 +258,6 @@ fun SignUp(navController: NavController) {
             )
         )
 
-        if (checkPassword) {
-            Text(
-                text = "Password doesn't meet the requirements",
-                color = Color.Red,
-                fontSize = 12.sp
-            )
-        }
-
         OutlinedTextField(
             value = passwordRepeat,
             onValueChange = { passwordRepeat = it },
@@ -289,14 +290,6 @@ fun SignUp(navController: NavController) {
             )
         )
 
-        if (checkPasswordRepeat) {
-            Text(
-                text = "Passwords doesn't match",
-                color = Color.Red,
-                fontSize = 12.sp
-            )
-        }
-
         Button(
             onClick = {
                 navController.navigate("SignIn")
@@ -315,15 +308,22 @@ fun SignUp(navController: NavController) {
 
         Button(
             onClick = {
-                checkPasswordRepeat = !passwordMatch(password, passwordRepeat)
-                checkPassword = !isValidPassword(password)
-                checkEmail = !checkEmail(email)
-                /*
-                if(checkPassword && !checkEmail) {
-                    userViewModel.onEvent(UserEvent.SaveUser)
+                var errorMessage = ""
+
+                if (!checkEmail(email)) {
+                    errorMessage += "Your email is invalid. "
+                }
+                else if (!passwordMatch(password, passwordRepeat)) {
+                    errorMessage += "The passwords don't match. "
                 }
 
-                 */
+                if (errorMessage.isNotEmpty()) {
+                    alertDialogMessage = errorMessage.trim()
+                    showDialog = true
+                } else {
+                    val user = User(firstName = name, lastName = surname, email = email, password = password)
+                    userViewModel.onEvent(UserEvent.SaveUser(user))
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -336,19 +336,40 @@ fun SignUp(navController: NavController) {
                 text = "Sign Up",
                 fontWeight = FontWeight.Bold
             )
+        }
 
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Error") },
+                text = { Text(alertDialogMessage) },
+                confirmButton = {
+                    Button(onClick = {
+                        showDialog = false
+                        userViewModel.resetUIState()
+                    }) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+
+
+        when (uiState) {
+            is UIState.Success -> {
+                navController.navigate("SignIn")
+            }
+            is UIState.Error -> {
+                alertDialogMessage = (uiState as UIState.Error).message
+                showDialog = true
+            }
+            else -> { /* Do nothing when the state is Loading */ }
         }
     }
 }
 
 fun checkEmail(email: String): Boolean {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}
-
-fun isValidPassword(password: String): Boolean {
-    val passwordRegex =
-        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$".toRegex()
-    return passwordRegex.matches(password)
 }
 
 fun passwordMatch(password: String, passwordRepeat: String): Boolean {

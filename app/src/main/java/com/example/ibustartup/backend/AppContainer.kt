@@ -2,9 +2,15 @@ package com.example.ibustartup.backend
 
 import android.content.Context
 import com.example.ibustartup.backend.repositories.CommentRepository
+import com.example.ibustartup.backend.repositories.FriendsRepository
 import com.example.ibustartup.backend.repositories.InvestorApplyRepository
+import com.example.ibustartup.backend.repositories.InvestorRepository
+import com.example.ibustartup.backend.repositories.NotificationRepository
 import com.example.ibustartup.backend.repositories.PositionRepository
+import com.example.ibustartup.backend.repositories.StartupRepository
 import com.example.ibustartup.backend.repositories.UserRepository
+import com.example.ibustartup.backend.tables.Notification
+import com.example.ibustartup.backend.tables.Startup
 
 
 interface AppContainer {
@@ -12,6 +18,10 @@ interface AppContainer {
     val userRepository: UserRepository
     val positionRepository: PositionRepository
     val investorApplyRepository: InvestorApplyRepository
+    val friendsRepository: FriendsRepository
+    val investorRepository: InvestorRepository
+    val notificationRepository: NotificationRepository
+    val startupRepository: StartupRepository
 }
 
 class AppDataContainer(private val context: Context): AppContainer {
@@ -31,4 +41,19 @@ class AppDataContainer(private val context: Context): AppContainer {
         InvestorApplyRepository(IBUStartupDatabase.getDatabase(context).investorApplyDao())
     }
 
+    override val friendsRepository: FriendsRepository by lazy {
+        FriendsRepository(IBUStartupDatabase.getDatabase(context).friendDao())
+    }
+
+    override val investorRepository: InvestorRepository by lazy {
+        InvestorRepository(IBUStartupDatabase.getDatabase(context).investorDao())
+    }
+
+    override val notificationRepository: NotificationRepository by lazy {
+        NotificationRepository(IBUStartupDatabase.getDatabase(context).notificationDao())
+    }
+
+    override val startupRepository: StartupRepository by lazy {
+        StartupRepository(IBUStartupDatabase.getDatabase(context).startupDao())
+    }
 }
