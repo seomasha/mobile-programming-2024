@@ -5,6 +5,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -14,6 +19,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.tables.Startup
+import com.example.ibustartup.backend.viewmodels.StartupEvent
+import com.example.ibustartup.backend.viewmodels.StartupViewModel
 import com.example.ibustartup.backend.viewmodels.UserViewModel
 import com.example.ibustartup.data.CommentData
 import com.example.ibustartup.data.FriendData
@@ -33,7 +40,7 @@ import com.example.ibustartup.ui.screens.Startups
 import com.example.ibustartup.ui.theme.GrayStroke
 
 @Composable
-fun Navigation(navController: NavHostController, userViewModel: UserViewModel) {
+fun Navigation(navController: NavHostController, userViewModel: UserViewModel, startupViewModel: StartupViewModel) {
     NavHost(navController = navController, startDestination = "SignUp") {
         composable("Home") {
             val comments = mutableListOf(
@@ -70,14 +77,7 @@ fun Navigation(navController: NavHostController, userViewModel: UserViewModel) {
             Home(positions = positions, modifier = Modifier)
         }
         composable("Startups") {
-            val startups = listOf(
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage)
-            )
-            Startups(startups = startups)
+            Startups(startupViewModel)
         }
         composable("Friends") {
             val friends = listOf(
@@ -114,7 +114,7 @@ fun Navigation(navController: NavHostController, userViewModel: UserViewModel) {
                 StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
                 StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage)
             )
-            MyProfile(startups)
+            MyProfile(startups, startupViewModel)
         }
         composable("SignIn") {
             SignIn(navController, userViewModel)
