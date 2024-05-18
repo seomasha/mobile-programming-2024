@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
                 IBUStartupDatabase.getDatabase(applicationContext).userDao().insertUser(user)
             }
             */
+            Log.d("USER ID", userViewModel.getLoggedInUserId().toString())
             IBUStartupTheme {
                 val navController = rememberNavController()
 

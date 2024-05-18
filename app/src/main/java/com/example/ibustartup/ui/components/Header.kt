@@ -60,8 +60,8 @@ fun Header(modifier: Modifier = Modifier, navController: NavController, userView
         Spacer(modifier = Modifier.width(10.dp))
         IconButton(
             onClick = {
-                navController.navigate("SignUp")
-                userViewModel.uiState.value = UIState.Loading
+                userViewModel.resetUIState()
+                navController.navigate("SignIn")
             }, modifier = Modifier.size(25.dp)
         ) {
             Icon(
