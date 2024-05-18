@@ -79,7 +79,6 @@ class MainActivity : ComponentActivity() {
             var showDialog by remember { mutableStateOf(false) }
             var startupName by remember { mutableStateOf("") }
             var startupDescription by remember { mutableStateOf("") }
-
             IBUStartupTheme {
                 if (showDialog) {
                     Dialog(onDismissRequest = { showDialog = false }) {

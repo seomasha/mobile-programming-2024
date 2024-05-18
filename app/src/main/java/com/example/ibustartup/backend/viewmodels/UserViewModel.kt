@@ -16,6 +16,7 @@ sealed class UserEvent {
 
 class UserViewModel(private val userRepository: UserRepository): ViewModel() {
     val uiState: MutableLiveData<UIState> = MutableLiveData()
+    private var loggedInUserId: Int? = null
 
     fun onEvent(event: UserEvent) {
         when(event) {
@@ -51,7 +52,9 @@ class UserViewModel(private val userRepository: UserRepository): ViewModel() {
                 val user = userRepository.getByEmail(email).firstOrNull()
 
                 if(user?.password == password) {
+                    loggedInUserId = user.id
                     uiState.value = UIState.LoggedIn
+                    Log.d("USER ID", loggedInUserId.toString())
                 } else {
                     uiState.value = UIState.Error("Your password is incorrect.")
                 }
@@ -63,7 +66,12 @@ class UserViewModel(private val userRepository: UserRepository): ViewModel() {
     }
 
     fun resetUIState() {
+        loggedInUserId = null
         uiState.value = UIState.Loading
+    }
+
+    fun getLoggedInUserId(): Int? {
+        return loggedInUserId
     }
 }
 
