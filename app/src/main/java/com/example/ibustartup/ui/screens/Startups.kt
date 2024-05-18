@@ -12,17 +12,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ibustartup.R
+import com.example.ibustartup.backend.viewmodels.StartupUIState
+import com.example.ibustartup.backend.viewmodels.StartupViewModel
 import com.example.ibustartup.data.StartupData
 import com.example.ibustartup.ui.components.Card
 import com.example.ibustartup.ui.theme.DarkBlue
@@ -39,9 +46,11 @@ import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 
 @Composable
-fun Startups(startups: List<StartupData>) {
+fun Startups(startupViewModel: StartupViewModel) {
     var isChecked by remember { mutableStateOf(false) }
     val myCheckedColor = Color(0xFF008DDA)
+    val scope = rememberCoroutineScope()
+    val startupsState by startupViewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -136,20 +145,46 @@ fun Startups(startups: List<StartupData>) {
                 }
             }
         }
-        LazyColumn(modifier = Modifier.padding(bottom = 80.dp)) {
-            itemsIndexed(startups.chunked(2)) { _, startup ->
-                Row(modifier = Modifier.padding(12.dp)) {
-                    startup.forEach { startupData ->
-                        Card(
-                            name = startupData.name,
-                            username = startupData.username,
-                            buttonText = "Apply",
-                            image = startupData.logoImage,
-                            onClick = {})
-                        Spacer(modifier = Modifier.width(12.dp))
+        when (startupsState) {
+            is StartupUIState.Loading -> {
+                CircularProgressIndicator()
+            }
+            is StartupUIState.SuccessWithData -> {
+                val startups = (startupsState as StartupUIState.SuccessWithData).startups
+                val groupedStartups = startups.chunkedPairs()
+
+                LazyColumn(modifier = Modifier.padding(bottom = 80.dp)) {
+                    items(groupedStartups) { startupPair ->
+                        Row(modifier = Modifier.padding(12.dp)) {
+                            startupPair.forEach { startupData ->
+                                if (startupData != null) {
+                                    Card(
+                                        name = startupData.name,
+                                        username = startupData.username,
+                                        buttonText = "Apply",
+                                        image = R.drawable.positionimage,
+                                        onClick = {}
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                } else {
+                                    Spacer(modifier = Modifier.weight(1f))
+                                }
+                            }
+                        }
                     }
                 }
             }
+            is StartupUIState.Error -> {
+                val errorMessage = (startupsState as StartupUIState.Error).message
+                Text(text = errorMessage)
+            }
+            StartupUIState.Success -> TODO()
         }
+    }
+}
+
+fun <T> List<T>.chunkedPairs(): List<List<T?>> {
+    return this.chunked(2).map {
+        if (it.size == 1) listOf(it[0], null) else it
     }
 }

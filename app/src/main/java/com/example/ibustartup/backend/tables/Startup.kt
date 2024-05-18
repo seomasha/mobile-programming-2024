@@ -14,6 +14,7 @@ data class Startup (
     val name: String,
     @ColumnInfo("username")
     val username: String,
-    @ColumnInfo("logo_image")
+    /*@ColumnInfo("logo_image")
     val logoImage: Int
+    */
 )
