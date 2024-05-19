@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.ibuPosition.backend.viewmodels.PositionViewModel
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.backend.viewmodels.StartupEvent
@@ -40,7 +41,7 @@ import com.example.ibustartup.ui.screens.Startups
 import com.example.ibustartup.ui.theme.GrayStroke
 
 @Composable
-fun Navigation(navController: NavHostController, userViewModel: UserViewModel, startupViewModel: StartupViewModel, showEditDialog: (Startup) -> Unit) {
+fun Navigation(positionViewModel: PositionViewModel, navController: NavHostController, userViewModel: UserViewModel, startupViewModel: StartupViewModel, showEditDialog: (Startup) -> Unit) {
     NavHost(navController = navController, startDestination = "SignUp") {
         composable("Home") {
             val comments = mutableListOf(
@@ -74,7 +75,7 @@ fun Navigation(navController: NavHostController, userViewModel: UserViewModel, s
                     comments = comments
                 )
             )
-            Home(positions = positions, modifier = Modifier)
+            Home(positionViewModel = positionViewModel, modifier = Modifier, userViewModel=userViewModel)
         }
         composable("Startups") {
             Startups(startupViewModel)

@@ -222,7 +222,7 @@ class MainActivity : ComponentActivity() {
                     } else if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignUp") {
                         SignUp(navController = navController, userViewModel = userViewModel)
                     } else {
-                        Navigation(navController = navController, userViewModel = userViewModel, startupViewModel = startupViewModel, showEditDialog = { startup ->
+                        Navigation(positionViewModel=positionViewModel, navController = navController, userViewModel = userViewModel, startupViewModel = startupViewModel, showEditDialog = { startup ->
                             selectedStartup = startup
                             showEditDialog = true
                         })
