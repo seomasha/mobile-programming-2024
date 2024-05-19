@@ -53,7 +53,7 @@ fun Card(name: String, username: String, buttonText: String, image: Int, onClick
         Text(text = username, fontSize = 12.sp, fontWeight = FontWeight.Light)
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { onClick }, colors = ButtonDefaults.buttonColors(
+            onClick = onClick, colors = ButtonDefaults.buttonColors(
                 containerColor = LightBlue
             )
         , modifier = Modifier.padding(bottom = 12.dp)) {

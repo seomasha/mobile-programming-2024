@@ -2,10 +2,11 @@ package com.example.ibustartup.backend.tables
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import org.jetbrains.annotations.NotNull
 
-@Entity("startups")
+@Entity(tableName = "startups", foreignKeys = [ForeignKey(entity = User::class, parentColumns = ["id"], childColumns = ["user_id"])])
 data class Startup (
     @PrimaryKey(autoGenerate = true)
     @NotNull
@@ -14,6 +15,8 @@ data class Startup (
     val name: String,
     @ColumnInfo("username")
     val username: String,
+    @ColumnInfo("user_id")
+    val userID: Int
     /*@ColumnInfo("logo_image")
     val logoImage: Int
     */

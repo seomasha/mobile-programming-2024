@@ -40,7 +40,7 @@ import com.example.ibustartup.ui.screens.Startups
 import com.example.ibustartup.ui.theme.GrayStroke
 
 @Composable
-fun Navigation(navController: NavHostController, userViewModel: UserViewModel, startupViewModel: StartupViewModel) {
+fun Navigation(navController: NavHostController, userViewModel: UserViewModel, startupViewModel: StartupViewModel, showEditDialog: (Startup) -> Unit) {
     NavHost(navController = navController, startDestination = "SignUp") {
         composable("Home") {
             val comments = mutableListOf(
@@ -107,14 +107,7 @@ fun Navigation(navController: NavHostController, userViewModel: UserViewModel, s
             Investors(investors = investors)
         }
         composable("MyProfile") {
-            val startups = listOf(
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage),
-                StartupData(name = "Test", username = "Test", logoImage = R.drawable.positionimage)
-            )
-            MyProfile(startups, startupViewModel)
+            MyProfile(startupViewModel, userViewModel, showEditDialog)
         }
         composable("SignIn") {
             SignIn(navController, userViewModel)

@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
         val appContainer = AppDataContainer(applicationContext)
 
         userViewModel = UserViewModel(appContainer.userRepository)
-        startupViewModel = StartupViewModel(appContainer.startupRepository)
+        startupViewModel = StartupViewModel(appContainer.startupRepository, userViewModel)
 
         setContent {
             /*
@@ -79,6 +79,9 @@ class MainActivity : ComponentActivity() {
             var showDialog by remember { mutableStateOf(false) }
             var startupName by remember { mutableStateOf("") }
             var startupDescription by remember { mutableStateOf("") }
+            var showEditDialog by remember { mutableStateOf(false) }
+            var selectedStartup by remember { mutableStateOf<Startup?>(null) }
+
             IBUStartupTheme {
                 if (showDialog) {
                     Dialog(onDismissRequest = { showDialog = false }) {
@@ -104,7 +107,7 @@ class MainActivity : ComponentActivity() {
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             Button(onClick = {
-                                startupViewModel.onEvent(StartupEvent.AddStartup(Startup(name = startupName, username = startupDescription)))
+                                startupViewModel.onEvent(StartupEvent.AddStartup(Startup(name = startupName, username = startupDescription, userID = userViewModel.getLoggedInUserId())))
                                 // startupViewModel.onEvent(StartupEvent.GetStartups)
                                 showDialog = false
                             }) {
@@ -183,10 +186,12 @@ class MainActivity : ComponentActivity() {
                     } else if (navController.currentBackStackEntryAsState()?.value?.destination?.route == "SignUp") {
                         SignUp(navController = navController, userViewModel = userViewModel)
                     } else {
-                        Navigation(navController = navController, userViewModel = userViewModel, startupViewModel = startupViewModel)
+                        Navigation(navController = navController, userViewModel = userViewModel, startupViewModel = startupViewModel, showEditDialog = { startup ->
+                            selectedStartup = startup
+                            showEditDialog = true
+                        })
                     }
                 }
-
             }
         }
     }

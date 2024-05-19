@@ -29,4 +29,7 @@ interface StartupDao {
 
     @Query("SELECT * FROM startups WHERE id = :id")
     fun getStartupByID(id: Int): Flow<Startup>
+
+    @Query("SELECT * FROM startups WHERE user_id = :user_id")
+    fun getStartupsByUserID(user_id: Int): Flow<List<Startup>>
 }
