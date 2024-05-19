@@ -4,10 +4,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ibuPosition.backend.viewmodels.PositionEvent
 import com.example.ibustartup.backend.repositories.UserRepository
 import com.example.ibustartup.backend.tables.User
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 sealed class UserEvent {
     data class SaveUser(val user: User): UserEvent()
@@ -71,6 +73,9 @@ class UserViewModel(private val userRepository: UserRepository): ViewModel() {
 
     fun getLoggedInUserId(): Int {
         return loggedInUserId
+    }
+    fun getUserById(id: Int): User?{
+        return runBlocking { userRepository.getByID(id).firstOrNull() }
     }
 }
 

@@ -55,7 +55,7 @@ class PositionViewModel(private val positionRepository: PositionRepository, priv
                     _UIState.value = PositionUIState.Success
                     val userID = userViewModel.getLoggedInUserId()
                     //onEvent(PositionEvent.GetPositionsByUserID(userID))
-                    //onEvent(PositionEvent.GetPositions)
+                    onEvent(PositionEvent.GetPositions)
                     //onEvent(PositionEvent.GetPositionsByUserID(userViewModel.getLoggedInUserId()))
                 }
             }
@@ -119,4 +119,5 @@ class PositionViewModel(private val positionRepository: PositionRepository, priv
     fun resetUIState() {
         _UIState.value = PositionUIState.Loading
     }
+
 }
