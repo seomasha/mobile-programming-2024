@@ -14,16 +14,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItemDefaults.contentColor
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +47,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.backend.viewmodels.StartupEvent
+import com.example.ibustartup.backend.viewmodels.StartupUIState
 import com.example.ibustartup.backend.viewmodels.StartupViewModel
+import com.example.ibustartup.backend.viewmodels.UserViewModel
 import com.example.ibustartup.data.StartupData
 import com.example.ibustartup.ui.components.Card
 import com.example.ibustartup.ui.theme.DarkBlue
@@ -51,8 +58,16 @@ import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
-fun MyProfile(startups: List<StartupData>, startupViewModel: StartupViewModel) {
+fun MyProfile(startupViewModel: StartupViewModel, userViewModel: UserViewModel, showEditDialog: (Startup) -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
+    val startupsState by startupViewModel.uiState.collectAsState()
+    var selectedStartup by remember { mutableStateOf<Startup?>(null) }
+    var showEditDialog by remember { mutableStateOf(false) }
+
+
+    LaunchedEffect(userViewModel.getLoggedInUserId()) {
+        startupViewModel.onEvent(StartupEvent.GetStartupsByUserID(userViewModel.getLoggedInUserId()))
+    }
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         val navController = rememberNavController()
@@ -209,20 +224,44 @@ fun MyProfile(startups: List<StartupData>, startupViewModel: StartupViewModel) {
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
-        LazyColumn(modifier = Modifier.padding(bottom = 80.dp)) {
-            itemsIndexed(startups.chunked(2)) { _, startup ->
-                Row(modifier = Modifier.padding(12.dp)) {
-                    startup.forEach { startupData ->
-                        Card(
-                            name = startupData.name,
-                            username = startupData.username,
-                            buttonText = "Apply",
-                            image = startupData.logoImage,
-                            onClick = {})
-                        Spacer(modifier = Modifier.width(12.dp))
+        when (startupsState) {
+            is StartupUIState.Loading -> {
+                CircularProgressIndicator()
+            }
+            is StartupUIState.SuccessWithData -> {
+                val startups = (startupsState as StartupUIState.SuccessWithData).startups
+                val groupedStartups = startups.chunkedPairs()
+
+                LazyColumn(modifier = Modifier.padding(bottom = 80.dp)) {
+                    items(groupedStartups) { startupPair ->
+                        Row(modifier = Modifier.padding(12.dp)) {
+                            startupPair.forEach { startupData ->
+                                if (startupData != null) {
+                                    Card(
+                                        name = startupData.name,
+                                        username = startupData.username,
+                                        buttonText = "Edit",
+                                        image = R.drawable.positionimage,
+                                        onClick = {
+                                            showEditDialog = true
+                                            selectedStartup = startupData
+                                            showEditDialog(startupData)
+                                        }
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                } else {
+                                    Spacer(modifier = Modifier.weight(1f))
+                                }
+                            }
+                        }
                     }
                 }
             }
+            is StartupUIState.Error -> {
+                val errorMessage = (startupsState as StartupUIState.Error).message
+                Text(text = errorMessage)
+            }
+            is StartupUIState.Success -> {}
         }
         Spacer(modifier = Modifier.weight(1f))
         FloatingActionButton(onClick = { showDialog = true }) {
@@ -231,11 +270,54 @@ fun MyProfile(startups: List<StartupData>, startupViewModel: StartupViewModel) {
                 contentDescription = "MyProfile FAB"
             )
         }
+        if (showEditDialog) {
+            Dialog(onDismissRequest = { showEditDialog = false }) {
+                Column(
+                    modifier = Modifier
+                        .background(Color.White, shape = RoundedCornerShape(15.dp))
+                        .padding(15.dp)
+                ) {
+                    var name by remember { mutableStateOf(selectedStartup!!.name) }
+                    var description by remember { mutableStateOf(selectedStartup!!.username) }
+
+                    Text(text = "Edit Startup Details")
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = { Text("Name") }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    OutlinedTextField(
+                        value = description,
+                        onValueChange = { description = it },
+                        label = { Text("Description") }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row (
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ){
+                        Button(onClick = {
+                            val updatedStartup = selectedStartup!!.copy(name = name, username = description)
+                            startupViewModel.onEvent(StartupEvent.EditStartup(updatedStartup))
+                            showEditDialog = false
+                        }) {
+                            Text("Save")
+                        }
+                        Button(onClick = {
+                            startupViewModel.onEvent(StartupEvent.DeleteStartup(selectedStartup!!))
+                            showEditDialog = false
+                        },
+                            colors = ButtonDefaults.buttonColors(
+                                contentColor = Color.White,
+                                containerColor = Color.Red
+                        ))
+                        {
+                            Text("Delete")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
-@Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
-fun MyProfilePreview() {
-    //MyProfile()
-}

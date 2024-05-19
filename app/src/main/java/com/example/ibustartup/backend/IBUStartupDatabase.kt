@@ -23,7 +23,7 @@ import com.example.ibustartup.backend.tables.User
 
 @Database(
     entities = [User::class, Comment::class, Friends::class, Investor::class, InvestorApply::class, Notification::class, Position::class, Startup::class],
-    version = 2,
+    version = 4,
     exportSchema = false
 )
 abstract class IBUStartupDatabase : RoomDatabase() {

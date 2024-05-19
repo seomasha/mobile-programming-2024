@@ -16,4 +16,6 @@ class StartupRepository(private val startupDao: StartupDao): BaseRepository<Star
     override fun getAll(): Flow<List<Startup>> = startupDao.getAllStartups()
 
     override fun getByID(id: Int): Flow<Startup> = startupDao.getStartupByID(id)
+
+    fun getStartupByUserID(user_id: Int): Flow<List<Startup>> = startupDao.getStartupsByUserID(user_id)
 }

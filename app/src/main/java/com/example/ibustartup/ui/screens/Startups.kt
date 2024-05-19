@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ibustartup.R
+import com.example.ibustartup.backend.viewmodels.StartupEvent
 import com.example.ibustartup.backend.viewmodels.StartupUIState
 import com.example.ibustartup.backend.viewmodels.StartupViewModel
 import com.example.ibustartup.data.StartupData
@@ -51,6 +52,10 @@ fun Startups(startupViewModel: StartupViewModel) {
     val myCheckedColor = Color(0xFF008DDA)
     val scope = rememberCoroutineScope()
     val startupsState by startupViewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = Unit) {
+        startupViewModel.onEvent(StartupEvent.GetStartups)
+    }
 
     Column(
         modifier = Modifier
@@ -178,7 +183,7 @@ fun Startups(startupViewModel: StartupViewModel) {
                 val errorMessage = (startupsState as StartupUIState.Error).message
                 Text(text = errorMessage)
             }
-            StartupUIState.Success -> TODO()
+            is StartupUIState.Success -> {}
         }
     }
 }

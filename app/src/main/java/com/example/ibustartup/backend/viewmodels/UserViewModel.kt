@@ -16,7 +16,7 @@ sealed class UserEvent {
 
 class UserViewModel(private val userRepository: UserRepository): ViewModel() {
     val uiState: MutableLiveData<UIState> = MutableLiveData()
-    private var loggedInUserId: Int? = null
+    private var loggedInUserId: Int = 0
 
     fun onEvent(event: UserEvent) {
         when(event) {
@@ -66,11 +66,10 @@ class UserViewModel(private val userRepository: UserRepository): ViewModel() {
     }
 
     fun resetUIState() {
-        loggedInUserId = null
         uiState.value = UIState.Loading
     }
 
-    fun getLoggedInUserId(): Int? {
+    fun getLoggedInUserId(): Int {
         return loggedInUserId
     }
 }
