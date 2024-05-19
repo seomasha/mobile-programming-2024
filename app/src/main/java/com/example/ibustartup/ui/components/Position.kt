@@ -82,7 +82,7 @@ fun Position(
                     Text(text = positionName, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     Text(
                         text = "@${user?.firstName?.lowercase()}.${user?.lastName?.lowercase()}",
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.Medium,
                         fontSize = 12.sp
                     )
                 }
