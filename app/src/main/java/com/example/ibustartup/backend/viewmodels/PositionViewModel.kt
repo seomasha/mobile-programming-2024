@@ -5,9 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ibustartup.backend.repositories.PositionRepository
 import com.example.ibustartup.backend.tables.Position
-import com.example.ibustartup.backend.tables.Startup
-import com.example.ibustartup.backend.viewmodels.StartupEvent
-import com.example.ibustartup.backend.viewmodels.StartupUIState
 import com.example.ibustartup.backend.viewmodels.UserViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -122,6 +119,4 @@ class PositionViewModel(private val positionRepository: PositionRepository, priv
     fun resetUIState() {
         _UIState.value = PositionUIState.Loading
     }
-}
-
 }

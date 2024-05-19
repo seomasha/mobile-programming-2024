@@ -36,10 +36,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.example.ibuPosition.backend.viewmodels.PositionEvent
+import com.example.ibuPosition.backend.viewmodels.PositionViewModel
 import com.example.ibustartup.backend.AppDataContainer
 import com.example.ibustartup.backend.IBUStartupDatabase
 import com.example.ibustartup.backend.dao.UserDao
 import com.example.ibustartup.backend.repositories.UserRepository
+import com.example.ibustartup.backend.tables.Position
 import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.backend.tables.User
 import com.example.ibustartup.backend.viewmodels.StartupEvent
@@ -59,6 +62,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     private lateinit var userViewModel: UserViewModel
     private lateinit var startupViewModel: StartupViewModel
+    private lateinit var positionViewModel: PositionViewModel
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +72,7 @@ class MainActivity : ComponentActivity() {
 
         userViewModel = UserViewModel(appContainer.userRepository)
         startupViewModel = StartupViewModel(appContainer.startupRepository, userViewModel)
+        positionViewModel = PositionViewModel(appContainer.positionRepository, userViewModel)
 
         setContent {
             /*
@@ -76,6 +81,9 @@ class MainActivity : ComponentActivity() {
                 IBUStartupDatabase.getDatabase(applicationContext).userDao().insertUser(user)
             }
             */
+            var showPositionDialog by remember { mutableStateOf(false) }
+            var positionName by remember { mutableStateOf("") }
+            var positionDescription by remember { mutableStateOf("") }
             var showDialog by remember { mutableStateOf(false) }
             var startupName by remember { mutableStateOf("") }
             var startupDescription by remember { mutableStateOf("") }
@@ -116,6 +124,39 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+                if (showPositionDialog) {
+                    Dialog(onDismissRequest = { showPositionDialog = false }) {
+                        Column (
+                            modifier = Modifier
+                                .background(
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(15.dp)
+                                )
+                                .padding(15.dp)
+                        ){
+                            Text(text = "Enter Position Details")
+                            OutlinedTextField(
+                                value = positionName,
+                                onValueChange = { positionName = it },
+                                label = { Text("Startup Name") }
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                            OutlinedTextField(
+                                value = positionDescription,
+                                onValueChange = { positionDescription = it },
+                                label = { Text("Position Description") }
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Button(onClick = {
+                                positionViewModel.onEvent(PositionEvent.AddPosition(Position(positionName = positionName, positionDescription = positionDescription, userID = userViewModel.getLoggedInUserId())))
+                                // startupViewModel.onEvent(StartupEvent.GetStartups)
+                                showPositionDialog = false
+                            }) {
+                                Text("Create")
+                            }
+                        }
+                    }
+                }
 
                 val navController = rememberNavController()
 
@@ -131,12 +172,7 @@ class MainActivity : ComponentActivity() {
                 }, floatingActionButton = {
                     if (navController.currentBackStackEntryAsState().value?.destination?.route == "Home") {
                         FloatingActionButton(onClick = {
-                            /*
-                            val user = User("Sead", "Sead" , "sead", "sead")
-                            GlobalScope.launch {
-                                AppDataContainer(applicationContext).userRepository.insert(user)
-                            }
-                             */
+                            showPositionDialog = true
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.add),
