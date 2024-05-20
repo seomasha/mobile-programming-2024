@@ -101,7 +101,8 @@ fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel
                                 likeCount = positionData.likeCount,
                                 commentCount = positionData.commentCount,
                                 applyCount = positionData.applyCount,
-                                userID = positionData.userID
+                                userID = positionData.userID,
+                                onClick = {}
                             )
                             Spacer(modifier = Modifier.width(12.dp))
                         } else {
