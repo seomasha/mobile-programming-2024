@@ -55,7 +55,8 @@ fun Position(
     likeCount: Int,
     commentCount: Int,
     applyCount: Int,
-    userID: Int
+    userID: Int,
+    onClick: () -> Unit
 ) {
     val user: User? = userViewModel.getUserById(userID)
 
@@ -82,7 +83,7 @@ fun Position(
                     Text(text = positionName, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     Text(
                         text = "@${user?.firstName?.lowercase()}.${user?.lastName?.lowercase()}",
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.Medium,
                         fontSize = 12.sp
                     )
                 }
@@ -93,13 +94,21 @@ fun Position(
                     )
                 ) {
                     Row() {
-                        Text(text = "Add friend", color = LightBlue)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            painter = painterResource(id = R.drawable.addfriend),
-                            contentDescription = "Add friend icon",
-                            tint = LightBlue
-                        )
+                        if(userID!=userViewModel.getLoggedInUserId()){
+                            Text(text = "Add friend", color = LightBlue)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Icon(
+                                painter = painterResource(id = R.drawable.addfriend),
+                                contentDescription = "Add friend icon",
+                                tint = LightBlue
+                            )
+                        }
+                        else{
+                            IconButton(onClick =  onClick) {
+                                Icon(painter = painterResource(id = R.drawable.three_dots_vertical), contentDescription = "More", tint = Color.Black)
+
+                            }
+                        }
                     }
                 }
             }

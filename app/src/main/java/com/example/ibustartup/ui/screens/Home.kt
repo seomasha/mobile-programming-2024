@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,12 +48,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.rememberNavController
 import com.example.ibuPosition.backend.viewmodels.PositionEvent
 import com.example.ibuPosition.backend.viewmodels.PositionUIState
 import com.example.ibuPosition.backend.viewmodels.PositionViewModel
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.tables.Position
+import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.backend.viewmodels.StartupEvent
 import com.example.ibustartup.backend.viewmodels.StartupUIState
 import com.example.ibustartup.backend.viewmodels.UserViewModel
@@ -71,6 +75,8 @@ import com.example.ibustartup.ui.theme.LightGray
 @Composable
 fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel: UserViewModel) {
     val positionsState by positionViewModel.UIState.collectAsState()
+    var selectedPosition by remember { mutableStateOf<Position?>(null) }
+    var showEditDialog by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = Unit) {
         positionViewModel.onEvent(PositionEvent.GetPositions)
     }
@@ -93,7 +99,7 @@ fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel
                             var username by remember {
                                 mutableStateOf("")
                             }
-                            Log.d("data",positionData.toString())
+                            Log.d("data", positionData.toString())
                             Position(
                                 userViewModel = userViewModel,
                                 positionName = positionData.positionName,
@@ -101,7 +107,11 @@ fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel
                                 likeCount = positionData.likeCount,
                                 commentCount = positionData.commentCount,
                                 applyCount = positionData.applyCount,
-                                userID = positionData.userID
+                                userID = positionData.userID,
+                                onClick = {
+                                    showEditDialog = true
+                                    selectedPosition = positionData
+                                }
                             )
                             Spacer(modifier = Modifier.width(12.dp))
                         } else {
@@ -118,7 +128,59 @@ fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel
 
             is PositionUIState.Success -> {}
         }
+        if (showEditDialog) {
+            Dialog(onDismissRequest = { showEditDialog = false }) {
+                Column(
+                    modifier = Modifier
+                        .background(Color.White, shape = RoundedCornerShape(15.dp))
+                        .padding(15.dp)
+                ) {
+                    var name by remember { mutableStateOf(selectedPosition!!.positionName) }
+                    var description by remember { mutableStateOf(selectedPosition!!.positionDescription) }
 
+                    Text(text = "Edit Startup Details")
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = { Text("Name") }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    OutlinedTextField(
+                        value = description,
+                        onValueChange = { description = it },
+                        label = { Text("Description") }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Button(onClick = {
+                            Log.d("Clicked", "ne")
+                            val updatedPosition =
+                                selectedPosition!!.copy(positionName = name, positionDescription = description)
+                            positionViewModel.onEvent(PositionEvent.EditPosition(updatedPosition))
+                            showEditDialog = false
+                        }) {
+                            Text("Save")
+                        }
+                        Button(
+                            onClick = {
+                                Log.d("clicked", "ne")
+                                positionViewModel.onEvent(PositionEvent.DeletePosition(selectedPosition!!))
+                                showEditDialog = false
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                contentColor = Color.White,
+                                containerColor = Color.Red
+                            )
+                        )
+                        {
+                            Text("Delete")
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }
