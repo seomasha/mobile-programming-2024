@@ -49,20 +49,19 @@ import java.util.Locale
 
 @Composable
 fun Position(
-    userViewModel: UserViewModel,
     positionName: String,
     positionDescription: String,
     likeCount: Int,
     commentCount: Int,
     applyCount: Int,
     userID: Int,
+    userViewModel: UserViewModel,
     onClick: () -> Unit
 ) {
     val user: User? = userViewModel.getUserById(userID)
 
     Column(
         modifier = Modifier
-
             .fillMaxWidth()
             .padding(8.dp)
             .background(color = Color.White, shape = RoundedCornerShape(8.dp))

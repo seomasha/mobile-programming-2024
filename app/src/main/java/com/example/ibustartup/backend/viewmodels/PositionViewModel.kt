@@ -28,96 +28,92 @@ sealed class PositionUIState {
 }
 
 class PositionViewModel(private val positionRepository: PositionRepository, private val userViewModel: UserViewModel) : ViewModel() {
-    private val _UIState = MutableStateFlow<PositionUIState>(PositionUIState.Loading)
-    val UIState : StateFlow<PositionUIState> = _UIState
+    private val _uiState = MutableStateFlow<PositionUIState>(PositionUIState.Loading)
+    val uiState: StateFlow<PositionUIState> = _uiState
 
-    fun onEvent(event: PositionEvent){
-        when(event){
+    fun onEvent(event: PositionEvent) {
+        when(event) {
             is PositionEvent.AddPosition -> addPosition(event.Position)
             is PositionEvent.DeletePosition -> deletePosition(event.Position)
             is PositionEvent.EditPosition -> editPosition(event.Position)
             is PositionEvent.GetPositions -> getPositions()
-            is PositionEvent.GetPositionById ->  getPositionById(event.id)
+            is PositionEvent.GetPositionById -> getPositionById(event.id)
         }
     }
 
-    private fun addPosition(Position: Position) {
+    private fun addPosition(position: Position) {
         viewModelScope.launch {
             try {
-                val PositionFromDB = positionRepository.getByID(Position.id).firstOrNull()
-
-                if(PositionFromDB?.id != null) {
-                    _UIState.value = PositionUIState.Error("Position with that ID already exists.")
-                }
-
-                else {
-                    positionRepository.insert(Position)
-                    _UIState.value = PositionUIState.Success
-                    val userID = userViewModel.getLoggedInUserId()
-                    //onEvent(PositionEvent.GetPositionsByUserID(userID))
+                val positionFromDB = positionRepository.getByID(position.id).firstOrNull()
+                if (positionFromDB != null) {
+                    _uiState.value = PositionUIState.Error("Position with that ID already exists.")
+                } else {
+                    positionRepository.insert(position)
+                    _uiState.value = PositionUIState.Success
                     onEvent(PositionEvent.GetPositions)
-                    //onEvent(PositionEvent.GetPositionsByUserID(userViewModel.getLoggedInUserId()))
                 }
-            }
-            catch (e: Exception) {
-                _UIState.value = PositionUIState.Error("An exception happened.")
+            } catch (e: Exception) {
+                _uiState.value = PositionUIState.Error("An exception happened: ${e.message}")
             }
         }
     }
 
-    private fun deletePosition(Position: Position) {
+    private fun deletePosition(position: Position) {
         viewModelScope.launch {
             try {
-                positionRepository.delete(Position)
-                _UIState.value = PositionUIState.Success
-                val userID = userViewModel.getLoggedInUserId()
-                //onEvent(PositionEvent.GetPositionsByUserID(userID))
-                //onEvent(PositionEvent.GetPositions)
-            }
-            catch (e: Exception) {
-                _UIState.value = PositionUIState.Error("An exception happened.")
+                Log.d("Position", "$position")
+                positionRepository.delete(position)
+                _uiState.value = PositionUIState.Success
+                onEvent(PositionEvent.GetPositions)
+            } catch (e: Exception) {
+                _uiState.value = PositionUIState.Error("An exception happened: ${e.message}")
             }
         }
     }
-    private fun editPosition(Position: Position) {
+
+    private fun editPosition(position: Position) {
         viewModelScope.launch {
             try {
-                positionRepository.update(Position)
-                _UIState.value = PositionUIState.Success
-                val userID = userViewModel.getLoggedInUserId()
-                //(onEvent(PositionEvent.GetPositionsByUserID(userID))
-                //onEvent(PositionEvent.GetPositions)
-            }
-            catch (e: Exception) {
-                _UIState.value = PositionUIState.Error("An exception happened.")
+                positionRepository.update(position)
+                _uiState.value = PositionUIState.Success
+                onEvent(PositionEvent.GetPositions)
+            } catch (e: Exception) {
+                _uiState.value = PositionUIState.Error("An exception happened: ${e.message}")
             }
         }
     }
+
     private fun getPositions() {
         viewModelScope.launch {
             try {
-                val Positions = positionRepository.getAll().firstOrNull()
-                if (Positions != null) {
-                    _UIState.value = PositionUIState.SuccessWithData(Positions)
-                    Log.d("PositionViewModel", "Loaded Positions: ${Positions.size}")
+                val positions = positionRepository.getAll().firstOrNull()
+                if (positions != null) {
+                    _uiState.value = PositionUIState.SuccessWithData(positions)
                 } else {
-                    _UIState.value = PositionUIState.Error("No Positions found.")
-                    Log.d("PositionViewModel", "No Positions found")
+                    _uiState.value = PositionUIState.Error("No Positions found.")
                 }
             } catch (e: Exception) {
-                _UIState.value = PositionUIState.Error("An exception happened.")
-                Log.e("PositionViewModel", "Exception fetching Positions", e)
+                _uiState.value = PositionUIState.Error("An exception happened: ${e.message}")
             }
         }
     }
-    fun getPositionById(id: Int): Position? {
-        return runBlocking {
-            positionRepository.getByID(id).firstOrNull()
+
+    private fun getPositionById(id: Int) {
+        viewModelScope.launch {
+            try {
+                val position = positionRepository.getByID(id).firstOrNull()
+                if (position != null) {
+                    _uiState.value = PositionUIState.SuccessWithData(listOf(position))
+                } else {
+                    _uiState.value = PositionUIState.Error("Position not found.")
+                }
+            } catch (e: Exception) {
+                _uiState.value = PositionUIState.Error("An exception happened: ${e.message}")
+            }
         }
     }
 
     fun resetUIState() {
-        _UIState.value = PositionUIState.Loading
+        _uiState.value = PositionUIState.Loading
     }
-
 }

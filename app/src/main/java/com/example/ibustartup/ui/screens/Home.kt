@@ -49,6 +49,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.compose.rememberNavController
 import com.example.ibuPosition.backend.viewmodels.PositionEvent
 import com.example.ibuPosition.backend.viewmodels.PositionUIState
@@ -70,16 +71,23 @@ import com.example.ibustartup.ui.theme.GrayBackground
 import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel: UserViewModel) {
-    val positionsState by positionViewModel.UIState.collectAsState()
+fun Home(
+    positionViewModel: PositionViewModel,
+    modifier: Modifier = Modifier,
+    userViewModel: UserViewModel
+) {
+    val positionsState by positionViewModel.uiState.collectAsState()
     var selectedPosition by remember { mutableStateOf<Position?>(null) }
     var showEditDialog by remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = Unit) {
+
+    LaunchedEffect(Unit) {
         positionViewModel.onEvent(PositionEvent.GetPositions)
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -93,30 +101,25 @@ fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel
             is PositionUIState.SuccessWithData -> {
                 val positions = (positionsState as PositionUIState.SuccessWithData).Positions
 
+                Log.d("Loaded positions", "$positions")
+
                 LazyColumn(modifier = Modifier.padding(bottom = 80.dp)) {
                     items(positions.reversed()) { positionData ->
-                        if (positionData != null) {
-                            var username by remember {
-                                mutableStateOf("")
+                        //Log.d("Loaded positions", "${positionData.id}")
+                        Position(
+                            userViewModel = userViewModel,
+                            positionName = positionData.positionName,
+                            positionDescription = positionData.positionDescription,
+                            likeCount = positionData.likeCount,
+                            commentCount = positionData.commentCount,
+                            applyCount = positionData.applyCount,
+                            userID = positionData.userID,
+                            onClick = {
+                                showEditDialog = true
+                                selectedPosition = positionData
                             }
-                            Log.d("data", positionData.toString())
-                            Position(
-                                userViewModel = userViewModel,
-                                positionName = positionData.positionName,
-                                positionDescription = positionData.positionDescription,
-                                likeCount = positionData.likeCount,
-                                commentCount = positionData.commentCount,
-                                applyCount = positionData.applyCount,
-                                userID = positionData.userID,
-                                onClick = {
-                                    showEditDialog = true
-                                    selectedPosition = positionData
-                                }
-                            )
-                            Spacer(modifier = Modifier.width(12.dp))
-                        } else {
-                            Spacer(modifier = Modifier.weight(1f))
-                        }
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
                     }
                 }
             }
@@ -126,8 +129,11 @@ fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel
                 Text(text = errorMessage)
             }
 
-            is PositionUIState.Success -> {}
+            is PositionUIState.Success -> {
+                // Handle other success states if needed
+            }
         }
+
         if (showEditDialog) {
             Dialog(onDismissRequest = { showEditDialog = false }) {
                 Column(
@@ -135,10 +141,14 @@ fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel
                         .background(Color.White, shape = RoundedCornerShape(15.dp))
                         .padding(15.dp)
                 ) {
-                    var name by remember { mutableStateOf(selectedPosition!!.positionName) }
-                    var description by remember { mutableStateOf(selectedPosition!!.positionDescription) }
+                    var name by remember { mutableStateOf(selectedPosition?.positionName ?: "") }
+                    var description by remember {
+                        mutableStateOf(
+                            selectedPosition?.positionDescription ?: ""
+                        )
+                    }
 
-                    Text(text = "Edit Startup Details")
+                    Text(text = "Edit Position Details")
                     OutlinedTextField(
                         value = name,
                         onValueChange = { name = it },
@@ -155,33 +165,48 @@ fun Home(positionViewModel: PositionViewModel, modifier: Modifier, userViewModel
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Button(onClick = {
-                            Log.d("Clicked", "ne")
-                            val updatedPosition =
-                                selectedPosition!!.copy(positionName = name, positionDescription = description)
-                            positionViewModel.onEvent(PositionEvent.EditPosition(updatedPosition))
-                            showEditDialog = false
+                            if (selectedPosition != null) {
+                                Log.d("EditDialog", "Saving position: $name, $description")
+                                val updatedPosition = selectedPosition!!.copy(
+                                    positionName = name,
+                                    positionDescription = description
+                                )
+                                positionViewModel.onEvent(PositionEvent.EditPosition(updatedPosition))
+                                showEditDialog = false
+                            } else {
+                                Log.e("EditDialog", "Selected position is null")
+                            }
                         }) {
                             Text("Save")
                         }
                         Button(
                             onClick = {
-                                Log.d("clicked", "ne")
-                                positionViewModel.onEvent(PositionEvent.DeletePosition(selectedPosition!!))
-                                showEditDialog = false
+                                if (selectedPosition != null) {
+                                    Log.d(
+                                        "EditDialog",
+                                        "Deleting position: ${selectedPosition!!.positionName}"
+                                    )
+                                    positionViewModel.onEvent(
+                                        PositionEvent.DeletePosition(
+                                            selectedPosition!!
+                                        )
+                                    )
+                                    showEditDialog = false
+                                } else {
+                                    Log.e("EditDialog", "Selected position is null")
+                                }
                             },
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = Color.White,
                                 containerColor = Color.Red
                             )
-                        )
-                        {
+                        ) {
                             Text("Delete")
                         }
                     }
                 }
             }
         }
-
     }
 }
 
