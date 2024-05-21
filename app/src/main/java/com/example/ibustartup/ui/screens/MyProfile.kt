@@ -1,5 +1,6 @@
 package com.example.ibustartup.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -236,6 +237,7 @@ fun MyProfile(startupViewModel: StartupViewModel, userViewModel: UserViewModel, 
                     items(groupedStartups) { startupPair ->
                         Row(modifier = Modifier.padding(12.dp)) {
                             startupPair.forEach { startupData ->
+                                Log.d("Loaded startups", "$startupData")
                                 if (startupData != null) {
                                     Card(
                                         name = startupData.name,

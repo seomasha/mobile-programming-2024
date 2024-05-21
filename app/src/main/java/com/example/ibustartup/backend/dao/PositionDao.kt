@@ -24,7 +24,7 @@ interface PositionDao {
 
     @Delete
     suspend fun deletePosition(position: Position)
-    @Query("SELECT * FROM positions p JOIN users u ON p.user_id=u.id")
+    @Query("SELECT * FROM positions p")
     fun getAllPositions(): Flow<List<Position>>
 
     @Query("SELECT * FROM positions WHERE id = :id")

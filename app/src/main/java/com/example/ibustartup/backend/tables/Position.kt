@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull
 data class Position(
     @PrimaryKey(autoGenerate = true)
     @NotNull
-    val id: Int=0,
+    val id: Int = 0,
     @ColumnInfo("position_name")
     val positionName: String,
     @ColumnInfo("position_description")
