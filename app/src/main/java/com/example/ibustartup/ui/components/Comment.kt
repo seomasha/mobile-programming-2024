@@ -60,6 +60,6 @@ fun Comment(comment: CommentData) {
 @Preview
 @Composable
 private fun CommentPreview() {
-    val comment = CommentData(profileImage = R.drawable.profile, name = "Sead Masetic", "Just a test")
+    val comment = CommentData(profileImage = R.drawable.user, name = "Sead Masetic", "Just a test")
     Comment(comment)
 }

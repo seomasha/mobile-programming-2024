@@ -32,6 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
 import com.example.ibustartup.data.FriendData
 import com.example.ibustartup.ui.components.Card
@@ -42,9 +44,15 @@ import com.example.ibustartup.ui.theme.GrayStroke
 import com.example.ibustartup.ui.theme.LightBlue
 
 @Composable
-fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) {
+fun Friends(
+    friends: List<FriendData>,
+    friendRequests: List<FriendRequestData>,
+    navController: NavController
+) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(bottom = 90.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 90.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -58,15 +66,15 @@ fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) 
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.profile),
+                painter = painterResource(id = R.drawable.user),
                 contentDescription = "Profile picture",
                 modifier = Modifier
                     .size(125.dp)
                     .clip(shape = CircleShape)
             )
-            Column (
+            Column(
                 horizontalAlignment = Alignment.CenterHorizontally
-            ){
+            ) {
                 Text(
                     text = "Sead Masetic",
                     fontSize = 22.sp,
@@ -80,7 +88,9 @@ fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) 
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
+                    onClick = {
+                        navController.navigate("MyProfile")
+                    }, colors = ButtonDefaults.buttonColors(
                         containerColor = LightBlue
                     )
                 ) {
@@ -89,7 +99,7 @@ fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) 
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
-        Column (
+        Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth(0.95f)
@@ -132,7 +142,7 @@ fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) 
                             buttonText = "Add friend",
                             image = friendData.logoImage,
                             onClick = {})
-                        Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(26.dp))
                     }
                 }
             }
@@ -143,6 +153,7 @@ fun Friends(friends: List<FriendData>, friendRequests: List<FriendRequestData>) 
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
 fun FriendsPreview() {
+    val navController = rememberNavController()
     val friends = listOf(
         FriendData(
             name = "Sead Masetic",
@@ -192,5 +203,5 @@ fun FriendsPreview() {
             logoImage = R.drawable.profile
         ),
     )
-    Friends(friends, friendsRequest)
+    Friends(friends, friendsRequest, navController = navController)
 }

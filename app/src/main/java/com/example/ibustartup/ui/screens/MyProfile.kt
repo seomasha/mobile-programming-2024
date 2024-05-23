@@ -92,7 +92,7 @@ fun MyProfile(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.profile),
+                painter = painterResource(id = R.drawable.user),
                 contentDescription = "Profile picture",
                 modifier = Modifier
                     .size(125.dp)
@@ -146,7 +146,7 @@ fun MyProfile(
                 )
                 Row {
                     Image(
-                        painter = painterResource(id = R.drawable.profile),
+                        painter = painterResource(id = R.drawable.user),
                         contentDescription = "Friend",
                         modifier = Modifier
                             .size(40.dp)
@@ -154,7 +154,7 @@ fun MyProfile(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Image(
-                        painter = painterResource(id = R.drawable.profile),
+                        painter = painterResource(id = R.drawable.user),
                         contentDescription = "Friend",
                         modifier = Modifier
                             .size(40.dp)
@@ -162,7 +162,7 @@ fun MyProfile(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Image(
-                        painter = painterResource(id = R.drawable.profile),
+                        painter = painterResource(id = R.drawable.user),
                         contentDescription = "Friend",
                         modifier = Modifier
                             .size(40.dp)
@@ -196,7 +196,7 @@ fun MyProfile(
                         .padding(8.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.profile),
+                        painter = painterResource(id = R.drawable.user),
                         contentDescription = "Profile",
                         modifier = Modifier
                             .size(30.dp)
@@ -219,7 +219,7 @@ fun MyProfile(
                         .padding(8.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.profile),
+                        painter = painterResource(id = R.drawable.user),
                         contentDescription = "Profile",
                         modifier = Modifier
                             .size(30.dp)
