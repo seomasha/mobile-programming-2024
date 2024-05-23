@@ -26,23 +26,23 @@ fun Notifications(notifications: List<NotificationData>) {
 fun NotificationsPreview(){
     val notifications = listOf(
         NotificationData(
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             message = "Notification 1"
         ),
         NotificationData(
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             message = "Notification 2"
         ),
         NotificationData(
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             message = "Notification 3"
         ),
         NotificationData(
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             message = "Notification 4"
         ),
         NotificationData(
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             message = "Notification 5"
         ),
     )

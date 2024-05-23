@@ -71,7 +71,7 @@ fun Position(
         Row() {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    painter = painterResource(id = R.drawable.profile),
+                    painter = painterResource(id = R.drawable.user),
                     contentDescription = "Profile picture",
                     modifier = Modifier
                         .size(50.dp)
@@ -208,12 +208,12 @@ fun Position(
 fun PositionPreview() {
     val comments = mutableListOf(
         CommentData(
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             name = "Sead Masetic",
             comment = "Test"
         ),
         CommentData(
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             name = "Sead Masetic",
             comment = "Test"
         )

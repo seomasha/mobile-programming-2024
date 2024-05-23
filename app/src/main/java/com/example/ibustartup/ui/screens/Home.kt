@@ -215,7 +215,7 @@ fun Home(
 fun HomePreview() {
     val comments = mutableListOf(
         CommentData(
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             name = "Sead Fikret",
             "Komentar"
         )
@@ -225,7 +225,7 @@ fun HomePreview() {
             name = "Sead Masetic",
             username = "seadmasetic",
             description = "Testiranje",
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             positionImage = R.drawable.positionimage,
             likeCount = 45,
             commentCount = 25,
@@ -236,7 +236,7 @@ fun HomePreview() {
             name = "Sead Masetic",
             username = "seadmasetic",
             description = "Testiranje",
-            profileImage = R.drawable.profile,
+            profileImage = R.drawable.user,
             positionImage = R.drawable.positionimage,
             likeCount = 45,
             commentCount = 25,

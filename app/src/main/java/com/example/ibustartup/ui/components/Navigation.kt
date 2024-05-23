@@ -46,7 +46,7 @@ fun Navigation(positionViewModel: PositionViewModel, navController: NavHostContr
         composable("Home") {
             val comments = mutableListOf(
                 CommentData(
-                    profileImage = R.drawable.profile,
+                    profileImage = R.drawable.user,
                     name = "Sead Fikret",
                     "Komentar"
                 )
@@ -56,7 +56,7 @@ fun Navigation(positionViewModel: PositionViewModel, navController: NavHostContr
                     name = "Sead Masetic",
                     username = "seadmasetic",
                     description = "Testiranje",
-                    profileImage = R.drawable.profile,
+                    profileImage = R.drawable.user,
                     positionImage = R.drawable.positionimage,
                     likeCount = 45,
                     commentCount = 25,
@@ -67,7 +67,7 @@ fun Navigation(positionViewModel: PositionViewModel, navController: NavHostContr
                     name = "Sead Masetic",
                     username = "seadmasetic",
                     description = "Testiranje",
-                    profileImage = R.drawable.profile,
+                    profileImage = R.drawable.user,
                     positionImage = R.drawable.positionimage,
                     likeCount = 45,
                     commentCount = 25,
@@ -90,11 +90,11 @@ fun Navigation(positionViewModel: PositionViewModel, navController: NavHostContr
                 FriendRequestData("Sead", R.drawable.positionimage),
                 FriendRequestData("Testiranje", R.drawable.positionimage)
             )
-            Friends(friends = friends, friendRequests)
+            Friends(friends = friends, friendRequests, navController)
         }
         composable("Activity") {
             val notifications = listOf(
-                NotificationData(R.drawable.profile, "Sead Masetic")
+                NotificationData(R.drawable.user, "Sead Masetic")
             )
             Notifications(notifications = notifications)
         }

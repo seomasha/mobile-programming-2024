@@ -57,7 +57,7 @@ fun Notification (notification: NotificationData) {
 @Composable
 fun NotificationPreview() {
     val notification = NotificationData(
-        profileImage = R.drawable.profile,
+        profileImage = R.drawable.user,
         message = "Sead Masetic liked your post."
     )
     Notification(notification = notification)

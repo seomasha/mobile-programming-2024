@@ -48,7 +48,7 @@ fun FriendRequest(name: String) {
     ) {
         Row {
             Image(
-                painter = painterResource(id = R.drawable.profile),
+                painter = painterResource(id = R.drawable.user),
                 contentDescription = "Profile",
                 modifier = Modifier
                     .size(30.dp)
