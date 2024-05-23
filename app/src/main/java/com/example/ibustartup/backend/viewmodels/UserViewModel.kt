@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ibuPosition.backend.viewmodels.PositionEvent
 import com.example.ibustartup.backend.repositories.UserRepository
+import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.backend.tables.User
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ import kotlinx.coroutines.runBlocking
 sealed class UserEvent {
     data class SaveUser(val user: User): UserEvent()
     data class Login(val email: String, val password: String): UserEvent()
+    data class EditUser(val user: User): UserEvent()
 }
 
 class UserViewModel(private val userRepository: UserRepository): ViewModel() {
@@ -24,6 +26,7 @@ class UserViewModel(private val userRepository: UserRepository): ViewModel() {
         when(event) {
             is UserEvent.SaveUser -> addUser(event.user)
             is UserEvent.Login -> login(event.email, event.password)
+            is UserEvent.EditUser -> editUser(event.user)
             else -> {}
         }
     }
@@ -60,6 +63,19 @@ class UserViewModel(private val userRepository: UserRepository): ViewModel() {
                 } else {
                     uiState.value = UIState.Error("Your password is incorrect.")
                 }
+            }
+            catch (e: Exception) {
+                uiState.value = UIState.Error("An exception happened.")
+            }
+        }
+    }
+
+    private fun editUser(user: User) {
+        viewModelScope.launch {
+            try {
+                userRepository.update(user)
+                uiState.value = UIState.Success
+                //onEvent(StartupEvent.GetStartups)
             }
             catch (e: Exception) {
                 uiState.value = UIState.Error("An exception happened.")

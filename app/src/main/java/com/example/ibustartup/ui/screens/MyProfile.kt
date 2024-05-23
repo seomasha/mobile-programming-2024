@@ -47,9 +47,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.rememberNavController
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.tables.Startup
+import com.example.ibustartup.backend.tables.User
 import com.example.ibustartup.backend.viewmodels.StartupEvent
 import com.example.ibustartup.backend.viewmodels.StartupUIState
 import com.example.ibustartup.backend.viewmodels.StartupViewModel
+import com.example.ibustartup.backend.viewmodels.UserEvent
 import com.example.ibustartup.backend.viewmodels.UserViewModel
 import com.example.ibustartup.data.StartupData
 import com.example.ibustartup.ui.components.Card
@@ -59,19 +61,26 @@ import com.example.ibustartup.ui.theme.LightBlue
 import com.example.ibustartup.ui.theme.LightGray
 
 @Composable
-fun MyProfile(startupViewModel: StartupViewModel, userViewModel: UserViewModel, showEditDialog: (Startup) -> Unit) {
+fun MyProfile(
+    startupViewModel: StartupViewModel,
+    userViewModel: UserViewModel,
+    showEditDialog: (Startup) -> Unit
+) {
     var showDialog by remember { mutableStateOf(false) }
     val startupsState by startupViewModel.uiState.collectAsState()
     var selectedStartup by remember { mutableStateOf<Startup?>(null) }
     var showEditDialog by remember { mutableStateOf(false) }
-
+    var showEditProfileDialog by remember { mutableStateOf(false) }
+    var user by remember { mutableStateOf<User?>(null) }
 
     LaunchedEffect(userViewModel.getLoggedInUserId()) {
         startupViewModel.onEvent(StartupEvent.GetStartupsByUserID(userViewModel.getLoggedInUserId()))
     }
 
+    user = userViewModel.getUserById(userViewModel.getLoggedInUserId())
+
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        val navController = rememberNavController()
+        //val navController = rememberNavController()
         Row(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
@@ -89,21 +98,23 @@ fun MyProfile(startupViewModel: StartupViewModel, userViewModel: UserViewModel, 
                     .size(125.dp)
                     .clip(shape = CircleShape)
             )
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Sead Masetic",
+                    text = "${user!!.firstName} ${user!!.lastName}",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = DarkBlue
                 )
                 Text(
-                    text = "@seadmasetic",
+                    text = "@${user!!.firstName}.${user!!.lastName}",
                     fontWeight = FontWeight.Light,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
+                    onClick = {
+                        showEditProfileDialog = true
+                    }, colors = ButtonDefaults.buttonColors(
                         containerColor = LightBlue
                     )
                 ) {
@@ -229,6 +240,7 @@ fun MyProfile(startupViewModel: StartupViewModel, userViewModel: UserViewModel, 
             is StartupUIState.Loading -> {
                 CircularProgressIndicator()
             }
+
             is StartupUIState.SuccessWithData -> {
                 val startups = (startupsState as StartupUIState.SuccessWithData).startups
                 val groupedStartups = startups.chunkedPairs()
@@ -259,10 +271,12 @@ fun MyProfile(startupViewModel: StartupViewModel, userViewModel: UserViewModel, 
                     }
                 }
             }
+
             is StartupUIState.Error -> {
                 val errorMessage = (startupsState as StartupUIState.Error).message
                 Text(text = errorMessage)
             }
+
             is StartupUIState.Success -> {}
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -295,26 +309,67 @@ fun MyProfile(startupViewModel: StartupViewModel, userViewModel: UserViewModel, 
                         label = { Text("Description") }
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    Row (
+                    Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
-                    ){
+                    ) {
                         Button(onClick = {
-                            val updatedStartup = selectedStartup!!.copy(name = name, username = description)
+                            val updatedStartup =
+                                selectedStartup!!.copy(name = name, username = description)
                             startupViewModel.onEvent(StartupEvent.EditStartup(updatedStartup))
                             showEditDialog = false
                         }) {
                             Text("Save")
                         }
-                        Button(onClick = {
-                            startupViewModel.onEvent(StartupEvent.DeleteStartup(selectedStartup!!))
-                            showEditDialog = false
-                        },
+                        Button(
+                            onClick = {
+                                startupViewModel.onEvent(StartupEvent.DeleteStartup(selectedStartup!!))
+                                showEditDialog = false
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = Color.White,
                                 containerColor = Color.Red
-                        ))
+                            )
+                        )
                         {
                             Text("Delete")
+                        }
+                    }
+                }
+            }
+        }
+        if (showEditProfileDialog) {
+            Dialog(onDismissRequest = { showEditProfileDialog = false }) {
+                Column(
+                    modifier = Modifier
+                        .background(Color.White, shape = RoundedCornerShape(15.dp))
+                        .padding(15.dp)
+                ) {
+                    var firstname by remember { mutableStateOf(user!!.firstName) }
+                    var lastname by remember { mutableStateOf(user!!.lastName) }
+
+                    Text(text = "Edit Profile Details")
+                    OutlinedTextField(
+                        value = firstname,
+                        onValueChange = { firstname = it },
+                        label = { Text("First Name") }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    OutlinedTextField(
+                        value = lastname,
+                        onValueChange = { lastname = it },
+                        label = { Text("Last Name") }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Button(onClick = {
+                            val updatedUser =
+                                user!!.copy(firstName = firstname, lastName = lastname)
+                            userViewModel.onEvent(UserEvent.EditUser(updatedUser))
+                            showEditProfileDialog = false
+                        }) {
+                            Text("Save")
                         }
                     }
                 }
