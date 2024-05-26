@@ -1,16 +1,14 @@
-package com.example.ibuPosition.backend.viewmodels
+package com.example.ibustartup.backend.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ibustartup.backend.repositories.PositionRepository
 import com.example.ibustartup.backend.tables.Position
-import com.example.ibustartup.backend.viewmodels.UserViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 sealed class PositionEvent {
     data class AddPosition(val Position: Position): PositionEvent()
