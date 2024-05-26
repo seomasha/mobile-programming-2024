@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.ibuPosition.backend.viewmodels.PositionViewModel
+import com.example.ibustartup.backend.viewmodels.PositionViewModel
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.backend.viewmodels.StartupEvent
