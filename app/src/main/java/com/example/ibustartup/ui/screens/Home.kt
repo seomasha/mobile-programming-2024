@@ -51,9 +51,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.compose.rememberNavController
-import com.example.ibuPosition.backend.viewmodels.PositionEvent
-import com.example.ibuPosition.backend.viewmodels.PositionUIState
-import com.example.ibuPosition.backend.viewmodels.PositionViewModel
+import com.example.ibustartup.backend.viewmodels.PositionEvent
+import com.example.ibustartup.backend.viewmodels.PositionUIState
+import com.example.ibustartup.backend.viewmodels.PositionViewModel
 import com.example.ibustartup.R
 import com.example.ibustartup.backend.tables.Position
 import com.example.ibustartup.backend.tables.Startup
