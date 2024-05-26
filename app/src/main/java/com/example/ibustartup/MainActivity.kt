@@ -36,8 +36,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
-import com.example.ibuPosition.backend.viewmodels.PositionEvent
-import com.example.ibuPosition.backend.viewmodels.PositionViewModel
+import com.example.ibustartup.backend.viewmodels.PositionEvent
+import com.example.ibustartup.backend.viewmodels.PositionViewModel
 import com.example.ibustartup.backend.AppDataContainer
 import com.example.ibustartup.backend.IBUStartupDatabase
 import com.example.ibustartup.backend.dao.UserDao
