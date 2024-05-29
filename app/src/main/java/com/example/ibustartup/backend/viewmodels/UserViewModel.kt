@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ibuPosition.backend.viewmodels.PositionEvent
+import com.example.ibustartup.backend.viewmodels.PositionEvent
 import com.example.ibustartup.backend.repositories.UserRepository
 import com.example.ibustartup.backend.tables.Startup
 import com.example.ibustartup.backend.tables.User
